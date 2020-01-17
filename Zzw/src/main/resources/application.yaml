@@ -1,0 +1,7 @@
+
+coap:
+  protocolName: coap
+  port: 5683
+  uriList:
+    - /reg
+    - /data
