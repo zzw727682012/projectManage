@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org">
+<head th:include="layout :: htmlhead" th:with="title='项目管理'"></head>
+<script src="/js/dateUtils.js"></script>
+<script src="/js/project/projectUserManage.js"></script>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <!--头-->
+    <div th:replace="fragments/head :: header"></div>
+
+    <div class="layui-body" style="margin: 1%">
+
+        <form id="userSearch" class="layui-form layui-form-pane" method="post" action="" style="margin-top: 20px;">
+            <div class="layui-form-item">
+                <label class="layui-form-label">姓名</label>
+                <div class="layui-input-inline">
+                    <input id="select_projectUserName" name="projectUserName" autocomplete="off" class="layui-input" type="text"/>
+                </div>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                <button class="layui-btn"  lay-submit="" lay-filter="searchSubmit">查询</button>
+            </div>
+
+        </form>
+
+        <!--<hr class="layui-bg-blue"/>-->
+        <hr class="layui-bg-black"/>
+
+        <button class="layui-btn layui-btn-normal" onclick="addProjectUser()">新增人员</button>
+
+        <table id="projectUserList" lay-filter="projectUserTable"></table>
+
+        <script type="text/html" id="optBar">
+            <a class="layui-btn layui-btn-xs" lay-event="edit">详情</a>
+            <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+        </script>
+    </div>
+
+
+    <!--添加或编辑用户-->
+    <div id="addProjectUser" class="layer_self_wrap" style="width:500px;display:none;">
+        <form id="projectForm" class="layui-form layui-form-pane" method="post" action="" style="margin-top: 20px;">
+            <input id="pageNum" type="hidden" name="pageNum"/>
+            <input id="id" type="hidden" name="id"/>
+            <input id="userPhoto" type="hidden" name="userPhoto"/>
+            <div class="layui-form-item">
+                <label class="layui-form-label">姓名</label>
+                <div class="layui-input-inline">
+                    <input id="userName" name="userName" lay-verify="required" autocomplete="off" class="layui-input" type="text"/>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">性别</label>
+                <div class="layui-input-inline">
+                    <input id="userSex" name="userSex" lay-verify="required" autocomplete="off" class="layui-input" type="text"/>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">出生日期</label>
+                <div class="layui-input-inline">
+                    <input name="userBirthday" id="userBirthday" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input" type="text"/>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">政治面貌</label>
+                <div class="layui-input-inline">
+                    <input id="userPoliticsStatus" name="userPoliticsStatus" autocomplete="off" class="layui-input" type="text"/>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">人党(团)日期</label>
+                <div class="layui-input-inline">
+                    <input id="userJoinTime" name="userJoinTime"  placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input" type="text"/>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">毕业院校</label>
+                <div class="layui-input-inline">
+                    <input id="userGraduateInstitutions" name="userGraduateInstitutions" autocomplete="off" class="layui-input" type="text"/>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">照片</label>
+                <div class="layui-input-inline uploadHeadImage">
+                    <div class="layui-upload-drag" id="headImg">
+                        <i class="layui-icon"></i>
+                        <p>点击上传图片，或将图片拖拽到此处</p>
+                    </div>
+                </div>
+                <div class="layui-input-inline">
+                    <div class="layui-upload-list">
+                        <img class="layui-upload-img headImage" src="http://t.cn/RCzsdCq" id="demo1">
+                        <p id="demoText"></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">父亲姓名</label>
+                <div class="layui-input-inline">
+                    <input id="userFatherName" name="userFatherName" autocomplete="off" class="layui-input" type="text"/>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">父亲年龄</label>
+                <div class="layui-input-inline">
+                    <input id="userFatherAge" name="userFatherAge" autocomplete="off" class="layui-input" type="text"/>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">父亲工作单位</label>
+                <div class="layui-input-inline">
+                    <input id="userFatherJob" name="userFatherJob" autocomplete="off" class="layui-input" type="text"/>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">母亲姓名</label>
+                <div class="layui-input-inline">
+                    <input id="userMotherName" name="userMotherName" autocomplete="off" class="layui-input" type="text"/>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">母亲年龄</label>
+                <div class="layui-input-inline">
+                    <input id="userMotherAge" name="userMotherAge" autocomplete="off" class="layui-input" type="text"/>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">母亲工作单位</label>
+                <div class="layui-input-inline">
+                    <input id="userMotherJob" name="userMotherJob" autocomplete="off" class="layui-input" type="text"/>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">家庭住址</label>
+                <div class="layui-input-inline">
+                    <input id="userHomeAddress" name="userHomeAddress" autocomplete="off" class="layui-input" type="text"/>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block" style="margin-left: 10px;">
+                    <button class="layui-btn"  lay-submit="" lay-filter="projectSubmit">提交</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!--底部-->
+    <div th:replace="fragments/footer :: footer"></div>
+</div>
+
+</body>
+</html>

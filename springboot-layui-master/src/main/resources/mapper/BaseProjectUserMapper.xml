@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.manager.dao.BaseProjectUserMapper">
+    <resultMap id="BaseResultMap" type="com.project.manager.pojo.BaseProjectUser">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="user_name" jdbcType="VARCHAR" property="userName" />
+        <result column="user_sex" jdbcType="VARCHAR" property="userSex" />
+        <result column="user_birthday" jdbcType="VARCHAR" property="userBirthday" />
+        <result column="user_politics_status" jdbcType="VARCHAR" property="userPoliticsStatus" />
+        <result column="user_join_time" jdbcType="VARCHAR" property="userJoinTime" />
+        <result column="user_graduate_institutions" jdbcType="VARCHAR" property="userGraduateInstitutions" />
+        <result column="user_photo" jdbcType="VARCHAR" property="userPhoto" />
+        <result column="user_father_name" jdbcType="VARCHAR" property="userFatherName" />
+        <result column="user_father_age" jdbcType="VARCHAR" property="userFatherAge" />
+        <result column="user_father_job" jdbcType="VARCHAR" property="userFatherJob" />
+        <result column="user_mother_name" jdbcType="VARCHAR" property="userMotherName" />
+        <result column="user_mother_job" jdbcType="VARCHAR" property="userMotherJob" />
+        <result column="user_mother_age" jdbcType="VARCHAR" property="userMotherAge" />
+        <result column="user_home_address" jdbcType="VARCHAR" property="userHomeAddress" />
+        <result column="create_time" jdbcType="VARCHAR" property="createTime" />
+    </resultMap>
+
+    <sql id="baseColumn">
+    id,user_name,user_sex,user_birthday,user_politics_status,user_join_time,user_graduate_institutions,
+    user_photo,user_father_name,user_father_age,user_father_job,user_mother_name,user_mother_job,user_mother_age,
+    user_home_address,create_time
+    </sql>
+
+    <select id="getProjectUserById" resultMap="BaseResultMap">
+        SELECT <include refid="baseColumn"/>
+        FROM base_project_user
+        WHERE id = #{id}
+    </select>
+
+    <select id="getPersonnelList" resultType="com.project.manager.dto.BasePersonnelInfoDTO">
+        SELECT id as id,user_name AS userName ,user_sex AS userSex,user_birthday as userBirthday,
+        user_politics_status as userPoliticsStatus,user_join_time as userJoinTime,user_graduate_institutions as userGraduateInstitutions,
+        user_photo AS userPhoto, user_father_name AS userFatherName, user_father_age AS userFatherAge, user_father_job as userFatherJob,
+        user_mother_name AS userMotherName, user_mother_job AS userMotherJob, user_mother_age AS userMotherAge, user_home_address as userHomeAddress,
+        create_time as createTime
+        FROM base_project_user
+        <where>
+            <if test="projectUserName != null and projectUserName != '' ">
+                and user_name LIKE '%' #{projectUserName} '%'
+            </if>
+        </where>
+    </select>
+
+    <update id="updateProject">
+        UPDATE base_project_user
+        <set>
+            <if test="userName != null">
+                user_name = #{userName},
+            </if>
+            <if test="userSex != null">
+                user_sex = #{userSex},
+            </if>
+            <if test="userBirthday != null">
+                user_birthday = #{userBirthday},
+            </if>
+            <if test="userPoliticsStatus != null">
+                user_politics_status = #{userPoliticsStatus},
+            </if>
+            <if test="userJoinTime != null">
+                user_join_time = #{userJoinTime},
+            </if>
+            <if test="userGraduateInstitutions != null">
+                user_graduate_institutions = #{userGraduateInstitutions},
+            </if>
+            <if test="userPhoto != null">
+                user_photo = #{userPhoto},
+            </if>
+            <if test="userFatherName != null">
+                user_father_name = #{userFatherName},
+            </if>
+            <if test="userFatherAge != null">
+                user_father_age = #{userFatherAge},
+            </if>
+            <if test="userFatherJob != null">
+                user_father_job = #{userFatherJob},
+            </if>
+            <if test="userMotherName != null">
+                user_mother_name = #{userMotherName},
+            </if>
+            <if test="userMotherJob != null">
+                user_mother_job = #{userMotherJob},
+            </if>
+            <if test="userMotherAge != null">
+                user_mother_age = #{userMotherAge},
+            </if>
+            <if test="userHomeAddress != null">
+                user_home_address = #{userHomeAddress}
+            </if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteProjectPersonnel">
+        delete from base_project_user WHERE id = #{id}
+    </delete>
+
+    <select id="getProjectUsers" resultMap="BaseResultMap">
+           SELECT id,user_name FROM base_project_user
+    </select>
+</mapper>

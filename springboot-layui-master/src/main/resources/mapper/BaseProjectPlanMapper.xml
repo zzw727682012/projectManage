@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.manager.dao.BaseProjectPlanMapper">
+    <resultMap id="BaseResultMap" type="com.project.manager.pojo.BaseProjectPlan">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="project_name" jdbcType="VARCHAR" property="projectName" />
+        <result column="project_id" jdbcType="INTEGER" property="projectId" />
+        <result column="project_code" jdbcType="VARCHAR" property="projectCode" />
+        <result column="project_manager_id" jdbcType="INTEGER" property="projectManagerId" />
+        <result column="project_node_name" jdbcType="VARCHAR" property="projectNodeName" />
+        <result column="project_node_finish" jdbcType="VARCHAR" property="projectNodeFinish" />
+        <result column="project_performance" jdbcType="VARCHAR" property="projectPerformance" />
+        <result column="project_node_delay_reason" jdbcType="VARCHAR" property="projectNodeDelayReason" />
+        <result column="expiration_time" jdbcType="VARCHAR" property="expirationTime" />
+        <result column="create_time" jdbcType="VARCHAR" property="createTime" />
+    </resultMap>
+
+    <sql id="baseColumn">
+    id,project_name,project_id,project_code,project_manager_id,project_node_finish,project_performance,
+    project_node_delay_reason,expiration_time,project_node_name,create_time
+  </sql>
+
+    <update id="updateProjectPlan">
+        UPDATE base_project_plan
+        <set>
+            <if test="projectName != null">
+                project_name = #{projectName},
+            </if>
+            <if test="projectId != null">
+                project_id = #{projectId},
+            </if>
+            <if test="projectNodeName != null">
+                project_node_name = #{projectNodeName},
+            </if>
+            <if test="projectCode != null">
+                project_code = #{projectCode},
+            </if>
+            <if test="projectNodeFinish != null">
+                project_node_finish = #{projectNodeFinish},
+            </if>
+            <if test="projectPerformance != null">
+                project_performance = #{projectPerformance},
+            </if>
+            <if test="projectManagerId != null">
+                project_manager_id = #{projectManagerId},
+            </if>
+            <if test="projectNodeDelayReason != null">
+                project_node_delay_reason = #{projectNodeDelayReason},
+            </if>
+            <if test="expirationTime != null">
+                expiration_time = #{expirationTime}
+            </if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <select id="getProjectPlanList" resultType="com.project.manager.pojo.BaseProjectPlan">
+        SELECT id as id,project_name as projectName,project_id projectId,project_code projectCode,project_node_finish projectNodeFinish,
+        project_performance projectPerformance,project_node_delay_reason projectNodeDelayReason,expiration_time expirationTime,
+        project_node_name projectNodeName,create_time createTime
+        FROM base_project_plan
+        <where>
+            <if test="projectName != null">
+               and project_name = #{projectName},
+            </if>
+            <if test="projectCode != null">
+               and project_code = #{projectCode},
+            </if>
+        </where>
+    </select>
+
+    <delete id="deleteProjectPlan">
+        delete from base_project_plan WHERE id = #{id}
+    </delete>
+</mapper>

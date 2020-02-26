@@ -1,15 +1,16 @@
 package com.haiyu;
 
-import com.haiyu.manager.ManagerApplication;
-import com.haiyu.manager.dao.BaseAdminUserMapper;
+import com.project.manager.ManagerApplication;
+import com.project.manager.dao.BaseAdminUserMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest(classes = {ManagerApplication.class})
+import java.security.NoSuchAlgorithmException;
+
+
 public class ManagerApplicationTests {
 
 	@Autowired
@@ -17,11 +18,8 @@ public class ManagerApplicationTests {
 
 	@Test
 	public void contextLoads() {
-		String  password = "1,9";
-		String[] split = password.split(",");
-		for (String s:split){
-			System.out.println(s);
-		}
+		String response = "";
+		System.out.println((response != null)&&(response.length()>0));
 
 	}
 

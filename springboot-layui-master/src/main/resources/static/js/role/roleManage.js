@@ -125,6 +125,9 @@ function edit(data,title){
         success: function(id, url, searchVal, result){      //使用远程方式的success回调
 
             console.log(pid)
+            console.log(id)
+            console.log(url)
+            console.log(searchVal)
             if(pid != null){
                 var assistAuditArry =pid.split(",");
                 formSelects.value('permissions', assistAuditArry);

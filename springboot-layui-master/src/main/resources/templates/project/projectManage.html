@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org"
+       xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<link rel="stylesheet" type="text/css" href="/css/formSelects-v4.css"/>
+<head th:include="layout :: htmlhead" th:with="title='项目管理'"></head>
+<script src="/js/dateUtils.js"></script>
+<script src="/js/project/projectManage.js"></script>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <!--头-->
+    <div th:replace="fragments/head :: header"></div>
+
+    <div class="layui-body" style="margin: 1%">
+
+        <form id="userSearch" class="layui-form layui-form-pane" method="post" action="" style="margin-top: 20px;">
+            <div class="layui-form-item">
+                <label class="layui-form-label">项目名称</label>
+                <div class="layui-input-inline">
+                    <input id="select_projectName" name="projectName" autocomplete="off" class="layui-input" type="text"/>
+                </div>
+                <label class="layui-form-label">项目编号</label>
+                <div class="layui-input-inline">
+                    <input id="select_projectCode" name="projectCode" autocomplete="off" class="layui-input" type="text"/>
+                </div>
+                <label class="layui-form-label">项目主导人</label>
+                <div class="layui-input-inline">
+                    <input id="select_projectManagerName" name="projectManagerName" autocomplete="off" class="layui-input" type="text"/>
+                </div>
+                <label class="layui-form-label">项目参研人</label>
+                <div class="layui-input-inline">
+                    <input id="select_projectUserName" name="projectUserName" autocomplete="off" class="layui-input" type="text"/>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">项目经费</label>
+                        <div class="layui-input-inline" style="width: 175px;">
+                            <input name="minAmount" id="minAmount" autocomplete="off" class="layui-input" type="text"/>
+                        </div>
+                    <div class="layui-form-mid">-</div>
+                        <div class="layui-input-inline" style="width: 175px;">
+                            <input name="maxAmount" id="maxAmount" autocomplete="off" class="layui-input" type="text"/>
+                        </div>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                    <button class="layui-btn"  lay-submit="" lay-filter="searchSubmit">查询</button>
+                </div>
+            </div>
+        </form>
+
+        <!--<hr class="layui-bg-blue"/>-->
+        <hr class="layui-bg-black"/>
+
+        <button class="layui-btn layui-btn-normal" onclick="addProject()">新增项目</button>
+
+<!--        <div style="display:none;" id="currentUser"><shiro:principal property="id"></shiro:principal></div>-->
+
+        <table id="projectList" lay-filter="projectTable"></table>
+
+        <script type="text/html" id="optBar">
+            <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+            <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+        </script>
+    </div>
+
+
+    <!--添加或编辑用户-->
+    <div id="addProject" class="layer_self_wrap" style="width:500px;display:none;">
+        <form id="projectForm" class="layui-form layui-form-pane" method="post" action="" style="margin-top: 20px;">
+            <input id="pageNum" type="hidden" name="pageNum"/>
+            <input id="id" type="hidden" name="id"/>
+            <input id="projectAccessory" name="projectAccessory" type="hidden"/>
+            <div class="layui-form-item">
+                <label class="layui-form-label">项目名称</label>
+                <div class="layui-input-inline">
+                    <input id="projectName" name="projectName" lay-verify="required" autocomplete="off" class="layui-input" type="text"/>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">项目编号</label>
+                <div class="layui-input-inline">
+                    <input id="projectCode" name="projectCode" autocomplete="off" lay-verify="required" class="layui-input" type="text"/>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">预算总经费</label>
+                <div class="layui-input-inline">
+                    <input id="projectBudgetAmount" name="projectBudgetAmount" autocomplete="off" class="layui-input" type="text"/>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">到账经费</label>
+                <div class="layui-input-inline">
+                    <input id="projectAccountAmount" name="projectAccountAmount" autocomplete="off" class="layui-input" type="text"/>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">项目主导人</label>
+                <div class="layui-input-inline">
+                    <select name="projectManagerId"  id="projectManagerName" >
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">参研人员</label>
+                <div class="layui-input-inline">
+                    <select name="projectResearchers"  xm-select="projectResearchers">
+
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">项目附件</label>
+                <div class="layui-input-inline">
+                    <button type="button" class="layui-btn" id="uploadProjectAccessory" name="uploadProjectAccessory"><i class="layui-icon"></i>上传</button>
+                    <a id="download" href="" class="layui-inline site-down">下载</a>
+                </div>
+
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">截止日期</label>
+                <div class="layui-input-inline">
+                    <input name="expirationTime" id="expirationTime" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input" type="text"/>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">是否完成</label>
+                <div class="layui-input-inline">
+                    <input name="finish" id="finish" autocomplete="off" class="layui-input" type="text"/>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block" style="margin-left: 10px;">
+                    <button class="layui-btn"  lay-submit="" lay-filter="projectSubmit">提交</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!--底部-->
+    <div th:replace="fragments/footer :: footer"></div>
+</div>
+
+</body>
+</html>
