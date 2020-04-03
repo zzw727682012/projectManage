@@ -6,44 +6,50 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- Table structure for base_project_info
 -- ----------------------------
 DROP TABLE IF EXISTS `base_project_info`;
-CREATE TABLE `base_project_info`  (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `project_name` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '项目名称',
-  `project_type` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '项目类型',
-  `project_source` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '项目来源',
-  `project_code` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '项目编号',
-  `project_budget_amount` NUMERIC (11) DEFAULT NULL COMMENT '预算总经费',
-  `project_account_amount` NUMERIC (11) DEFAULT NULL COMMENT '到账经费',
-  `project_manager_id` int(11) DEFAULT NULL COMMENT '项目主导人id',
-  `project_researchers` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '项目参研人员',
-  `project_accessory` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '附件',
-  `create_time` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '添加时间',
-  `expiration_time` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '到期时间',
-  `if_finish` int(1) DEFAULT NULL COMMENT '完成标志',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 15 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+CREATE TABLE `base_project_info` (
+	`id` INT(11) NOT NULL AUTO_INCREMENT,
+	`project_name` VARCHAR(30) NOT NULL COMMENT '项目名称' COLLATE 'utf8_general_ci',
+	`project_source` VARCHAR(50) NULL DEFAULT NULL COMMENT '项目来源' COLLATE 'utf8_general_ci',
+	`project_budget_amount` DECIMAL(11,0) NULL DEFAULT NULL COMMENT '预算总经费',
+	`project_account_amount` DECIMAL(11,0) NULL DEFAULT NULL COMMENT '到账经费',
+	`project_manager_id` INT(11) NULL DEFAULT NULL COMMENT '项目主导人id',
+	`project_researchers` VARCHAR(200) NULL DEFAULT NULL COMMENT '项目参研人员' COLLATE 'utf8_general_ci',
+	`technical_report` VARCHAR(200) NULL DEFAULT NULL COMMENT '技术报告' COLLATE 'utf8_general_ci',
+	`final_report` VARCHAR(200) NULL DEFAULT NULL COMMENT '总结报告' COLLATE 'utf8_general_ci',
+	`node_count` INT(3) NULL DEFAULT NULL COMMENT '节点数量',
+	`create_time` VARCHAR(64) NULL DEFAULT NULL COMMENT '添加时间' COLLATE 'utf8_general_ci',
+	`expiration_time` VARCHAR(64) NULL DEFAULT NULL COMMENT '到期时间' COLLATE 'utf8_general_ci',
+	`if_finish` VARCHAR(50) NULL DEFAULT NULL COMMENT '完成标志',
+	`start_time` VARCHAR(64) NULL DEFAULT NULL COMMENT '开始日期' COLLATE 'utf8_general_ci',
+	PRIMARY KEY (`id`) USING BTREE
+)
+COLLATE='utf8_general_ci'
+ENGINE=InnoDB
+ROW_FORMAT=COMPACT
+AUTO_INCREMENT=18
+;
 
 
 DROP TABLE IF EXISTS `base_project_user`;
-CREATE TABLE `base_project_user`  (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_name` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '姓名',
-  `user_sex` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '性别',
-  `user_birthday` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '出生日期',
-  `user_politics_status` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '政治面貌',
-  `user_join_time` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '入党团时间',
-  `user_graduate_institutions` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '毕业院校',
-  `user_photo` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '照片',
-  `user_father_name` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '父亲姓名',
-  `user_father_age` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '父亲年龄',
-  `user_father_job` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '父亲工作单位',
-  `user_mother_name` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '母亲姓名',
-  `user_mother_age` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '母亲年龄',
-  `user_mother_job` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '母亲工作单位',
-  `user_home_address` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '家庭住址',
-  `create_time` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '添加时间',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 15 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+CREATE TABLE `base_project_user` (
+	`id` INT(11) NOT NULL AUTO_INCREMENT,
+	`user_name` VARCHAR(30) NOT NULL COMMENT '姓名' COLLATE 'utf8_general_ci',
+	`user_sex` VARCHAR(10) NOT NULL DEFAULT '' COMMENT '性别',
+	`user_birthday` VARCHAR(50) NULL DEFAULT NULL COMMENT '出生日期' COLLATE 'utf8_general_ci',
+	`user_politics_status` VARCHAR(50) NULL DEFAULT NULL COMMENT '政治面貌' COLLATE 'utf8_general_ci',
+	`user_join_time` VARCHAR(50) NULL DEFAULT NULL COMMENT '入党团时间' COLLATE 'utf8_general_ci',
+	`user_graduate_institutions` VARCHAR(50) NULL DEFAULT NULL COMMENT '毕业院校' COLLATE 'utf8_general_ci',
+	`user_organization` VARCHAR(50) NULL DEFAULT NULL COMMENT '工作单位' COLLATE 'utf8_general_ci',
+	`user_teaching_office` VARCHAR(50) NULL DEFAULT NULL COMMENT '教研室' COLLATE 'utf8_general_ci',
+	`user_home_address` VARCHAR(50) NULL DEFAULT NULL COMMENT '家庭住址' COLLATE 'utf8_general_ci',
+	`create_time` VARCHAR(64) NULL DEFAULT NULL COMMENT '添加时间' COLLATE 'utf8_general_ci',
+	PRIMARY KEY (`id`) USING BTREE
+)
+COLLATE='utf8_general_ci'
+ENGINE=InnoDB
+ROW_FORMAT=COMPACT
+AUTO_INCREMENT=20
+;
 
 DROP TABLE IF EXISTS `base_project_plan`;
 CREATE TABLE `base_project_plan`  (

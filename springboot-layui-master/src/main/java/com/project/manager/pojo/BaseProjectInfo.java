@@ -22,22 +22,10 @@ public class BaseProjectInfo {
     private String projectName;
 
     /**
-     * 项目类型
-     */
-    @Column(name = "project_type")
-    private String projectType;
-
-    /**
      * 项目来源
      */
     @Column(name = "project_source")
     private String projectSource;
-
-    /**
-     * 项目编号
-     */
-    @Column(name = "project_code")
-    private String projectCode;
 
     /**
      * 预算总经费
@@ -63,10 +51,22 @@ public class BaseProjectInfo {
     @Column(name = "project_researchers")
     private String projectResearchers;
     /**
-     * 项目合同
+     * 技术报告
      */
-    @Column(name = "project_accessory")
-    private String projectAccessory;
+    @Column(name = "technical_report")
+    private String technicalReport;
+
+    /**
+     * 总结报告
+     */
+    @Column(name = "final_report")
+    private String finalReport;
+
+    /**
+     * 节点数量
+     */
+    @Column(name = "node_count")
+    private Integer nodeCount;
 
     /**
      * 创建时间
@@ -79,6 +79,12 @@ public class BaseProjectInfo {
      */
     @Column(name = "expiration_time")
     private String expirationTime;
+
+    /**
+     * 开始时间
+     */
+    @Column(name = "start_time")
+    private String startTime;
 
     /**
      * 1：有效
@@ -103,28 +109,12 @@ public class BaseProjectInfo {
         this.projectName = projectName;
     }
 
-    public String getProjectType() {
-        return projectType;
-    }
-
-    public void setProjectType(String projectType) {
-        this.projectType = projectType;
-    }
-
     public String getProjectSource() {
         return projectSource;
     }
 
     public void setProjectSource(String projectSource) {
         this.projectSource = projectSource;
-    }
-
-    public String getProjectCode() {
-        return projectCode;
-    }
-
-    public void setProjectCode(String projectCode) {
-        this.projectCode = projectCode;
     }
 
     public Double getProjectBudgetAmount() {
@@ -143,14 +133,6 @@ public class BaseProjectInfo {
         this.projectAccountAmount = projectAccountAmount;
     }
 
-    public String getProjectResearchers() {
-        return projectResearchers;
-    }
-
-    public void setProjectResearchers(String projectResearchers) {
-        this.projectResearchers = projectResearchers;
-    }
-
     public Integer getProjectManagerId() {
         return projectManagerId;
     }
@@ -159,12 +141,36 @@ public class BaseProjectInfo {
         this.projectManagerId = projectManagerId;
     }
 
-    public String getProjectAccessory() {
-        return projectAccessory;
+    public String getProjectResearchers() {
+        return projectResearchers;
     }
 
-    public void setProjectAccessory(String projectAccessory) {
-        this.projectAccessory = projectAccessory;
+    public void setProjectResearchers(String projectResearchers) {
+        this.projectResearchers = projectResearchers;
+    }
+
+    public String getTechnicalReport() {
+        return technicalReport;
+    }
+
+    public void setTechnicalReport(String technicalReport) {
+        this.technicalReport = technicalReport;
+    }
+
+    public String getFinalReport() {
+        return finalReport;
+    }
+
+    public void setFinalReport(String finalReport) {
+        this.finalReport = finalReport;
+    }
+
+    public Integer getNodeCount() {
+        return nodeCount;
+    }
+
+    public void setNodeCount(Integer nodeCount) {
+        this.nodeCount = nodeCount;
     }
 
     public String getCreateTime() {
@@ -183,6 +189,14 @@ public class BaseProjectInfo {
         this.expirationTime = expirationTime;
     }
 
+    public String getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
+    }
+
     public String getFinish() {
         return finish;
     }
@@ -196,16 +210,17 @@ public class BaseProjectInfo {
         return "BaseProjectInfo{" +
                 "id=" + id +
                 ", projectName='" + projectName + '\'' +
-                ", projectType='" + projectType + '\'' +
                 ", projectSource='" + projectSource + '\'' +
-                ", projectCode='" + projectCode + '\'' +
                 ", projectBudgetAmount=" + projectBudgetAmount +
                 ", projectAccountAmount=" + projectAccountAmount +
                 ", projectManagerId=" + projectManagerId +
                 ", projectResearchers='" + projectResearchers + '\'' +
-                ", projectAccessory='" + projectAccessory + '\'' +
+                ", technicalReport='" + technicalReport + '\'' +
+                ", finalReport='" + finalReport + '\'' +
+                ", nodeCount=" + nodeCount +
                 ", createTime='" + createTime + '\'' +
                 ", expirationTime='" + expirationTime + '\'' +
+                ", startTime='" + startTime + '\'' +
                 ", finish='" + finish + '\'' +
                 '}';
     }

@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Delivery Tracking</title>
+    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+    <script>
+        function load() {
+            var url = location.search;
+            var pathName = window.document.location.pathname;
+            var projectName=pathName.substring(0,pathName.substr(1).indexOf('/')+1);
+            var trackingId = "";
+            if (url.indexOf("?") != -1) {
+                var str = url.split("?");
+                trackingId = decodeURIComponent(str[1].replace("trackingId=",""));
+            }
+            if (trackingId.charAt(trackingId.length -1) == "R") {
+                viewReturn(trackingId, projectName);
+            } else {
+                viewDelivery(trackingId, projectName);
+            }
+        }
+
+        function viewDelivery(trackingId, projectName) {
+            var data = {
+                trackingId : trackingId
+            };
+            $.ajax({
+                type: "get",
+                url: projectName +"/DeliveryTrackingServlet",
+                data: data,
+                dataType: "json",
+                success: function(result){
+                    console.log(result);
+                    if (result.status == 0) {
+                        alert("error:"+result.msg);
+                    } else {
+                        var html = '';
+                        $.each(result.data, function (index, value) {
+                            if (index == 0) {
+                                $("#tracking").val(value.tracking);
+                                $("#expectedDelivery").val(value.expectedDelivery);
+                                var  eventType = value.eventType;
+                                if (eventType == "DO_ORDER_ACCEPTED" || eventType == "DO_ARRANGED_DELIVERY"){
+                                    $("#OrderAccepted").css('color','black').css('fontWeight','bold');
+                                    $("#concentric1").removeClass('span1').addClass('span2');
+                                }
+                                if (eventType == "DO_PICKED_UP"){
+                                    $("#PickedUp").css('color','black').css('fontWeight','bold');
+                                    $("#concentric1").removeClass('span1').addClass('span2');
+                                    $("#concentric2").removeClass('span1').addClass('span2');
+                                }
+                                if (eventType == "DO_IN_TRANSIT"){
+                                    $("#InTransit").css('color','black').css('fontWeight','bold');
+                                    $("#concentric1").removeClass('span1').addClass('span2');
+                                    $("#concentric2").removeClass('span1').addClass('span2');
+                                    $("#concentric3").removeClass('span1').addClass('span2');
+                                }
+                                if (eventType == "DO_OUT_FOR_DELIVERY" || eventType == "DO_DELIVERY_FAILED_DLVYATT"|| eventType == "DO_DELIVERY_FAILED_NONREACH"){
+                                    $("#OutForDelivery").css('color','black').css('fontWeight','bold');
+                                    $("#concentric1").removeClass('span1').addClass('span2');
+                                    $("#concentric2").removeClass('span1').addClass('span2');
+                                    $("#concentric3").removeClass('span1').addClass('span2');
+                                    $("#concentric4").removeClass('span1').addClass('span2');
+                                }
+                                if (eventType == "DO_DELIVERED"){
+                                    $("#Delivered").css('color','black').css('fontWeight','bold');
+                                    $("#concentric1").removeClass('span1').addClass('span2');
+                                    $("#concentric2").removeClass('span1').addClass('span2');
+                                    $("#concentric3").removeClass('span1').addClass('span2');
+                                    $("#concentric4").removeClass('span1').addClass('span2');
+                                    $("#concentric5").removeClass('span1').addClass('span2');
+                                }
+                            }
+                            html = html + '<tr>';
+                            html = html + '<td class="td1">' + value.seq + '</td>';
+                            html = html + '<td class="td2">' + value.dateLocation + '</td>';
+                            html = html + '<td class="td3">' + value.description + '</td>';
+                            html = html + '</tr>';
+                        })
+
+                        $("#tab").html(html);
+                    }
+
+                },
+                error: function(){
+                    // alert("error");
+                }
+            })
+        }
+
+        function viewReturn(trackingId, projectName) {
+            $("#delivery").css('display', 'none');
+            $("#return").css('display', 'block')
+
+            var data = {
+                trackingId : trackingId
+            };
+            $.ajax({
+                type: "get",
+                url: projectName +"/DeliveryTrackingServlet",
+                data: data,
+                dataType: "json",
+                success: function(result){
+                    console.log(result);
+                    if (result.status == 0) {
+                        alert("error:"+result.msg);
+                    } else {
+                        var html = '';
+                        $.each(result.data, function (index, value) {
+                            if (index == 0) {
+                                $("#tracking-r").val(value.tracking);
+                                $("#expectedDelivery-r").val(value.expectedDelivery);
+                                var  eventType = value.eventType;
+                                if (eventType == "RO_ORDER_ACCEPTED" || eventType == "RO_ARRANGED_DELIVERY" ){
+                                    $("#OrderAccepted-r").css('color','black').css('fontWeight','bold');
+                                    $("#concentric1-r").removeClass('span1').addClass('span2');
+                                }
+                                if (eventType == "RO_PICKED_UP"){
+                                    $("#PickedUp-r").css('color','black').css('fontWeight','bold');
+                                    $("#concentric1-r").removeClass('span1').addClass('span2');
+                                    $("#concentric2-r").removeClass('span1').addClass('span2');
+                                }
+                                if (eventType == "RO_IN_TRANSIT"){
+                                    $("#InTransit-r").css('color','black').css('fontWeight','bold');
+                                    $("#concentric1-r").removeClass('span1').addClass('span2');
+                                    $("#concentric2-r").removeClass('span1').addClass('span2');
+                                    $("#concentric3-r").removeClass('span1').addClass('span2');
+                                }
+                                if (eventType == "RO_DELIVERY_FAILED_DLVYATT"|| eventType == "RO_DELIVERY_FAILED_NONREACH"){
+                                    $("#OutForDelivery-r").css('color','black').css('fontWeight','bold');
+                                    $("#concentric1-r").removeClass('span1').addClass('span2');
+                                    $("#concentric2-r").removeClass('span1').addClass('span2');
+                                    $("#concentric3-r").removeClass('span1').addClass('span2');
+                                    $("#concentric4-r").removeClass('span1').addClass('span2');
+                                }
+                                if (eventType == "RO_DELIVERED"){
+                                    $("#Delivered-r").css('color','black').css('fontWeight','bold');
+                                    $("#concentric1-r").removeClass('span1').addClass('span2');
+                                    $("#concentric2-r").removeClass('span1').addClass('span2');
+                                    $("#concentric3-r").removeClass('span1').addClass('span2');
+                                    $("#concentric4-r").removeClass('span1').addClass('span2');
+                                    $("#concentric5-r").removeClass('span1').addClass('span2');
+                                }
+                            }
+                            html = html + '<tr>';
+                            html = html + '<td class="td1">' + value.seq + '</td>';
+                            html = html + '<td class="td2">' + value.dateLocation + '</td>';
+                            html = html + '<td class="td3">' + value.description + '</td>';
+                            html = html + '</tr>';
+                        })
+
+                        $("#tab-r").html(html);
+                    }
+
+                },
+                error: function(){
+                    // alert("error");
+                }
+            })
+        }
+    </script>
+    <style type="text/css">
+
+        .td1{font-family:Arial;width: 100px;text-align:center;padding: 10px}
+        .td2{font-family:Arial;width: 300px;text-align:center;padding: 10px}
+        .td3{font-family:Arial;width: 500px;padding: 10px}
+        tr{display: block;margin: 5px 0;}
+        .progressBar{
+            width: 80%;
+            height: 50px;
+            position: relative;
+            margin: 50px 0 0 100px;
+        }
+        .progressBarDiv{
+            width: 100%;
+            height: 10px;
+            position: absolute;
+            top:50%;
+            left: 0;
+            margin-top:-20px;
+            background: #ccc;
+        }
+        .span2{
+            position: absolute;
+            top:0;
+            margin-top: -20px;
+            width: 40px;
+            height: 40px;
+            border: 10px solid orange;
+            border-radius: 50%;
+            background: white;
+            margin-left: -20px;
+            color:#fff;
+        }
+        .span1{
+            position: absolute;
+            top:0;
+            margin-top: -10px;
+            width: 40px;
+            height: 40px;
+            border: 2px solid #ccc;
+            border-radius: 50%;
+            background: white;
+            margin-left: -20px;
+        }
+
+    </style>
+</head>
+<body onload="load()">
+<div id="delivery" >
+    <div id="head" style="margin: 20px">
+        <label style="font-family:Arial;">Tracking#:</label>
+        <input id="tracking" type="text" style="font-family:Arial;width:300px;font-size: 18px;font-weight: bold; position:absolute;left:15%;border:none;"/>
+
+
+        <label style="font-family:Arial;position: absolute;left: 50%">Expected Delivery:</label>
+        <input id="expectedDelivery" readonly  type="text" style="font-family:Arial;width:300px;font-size: 18px;font-weight: bold;position:absolute;left:65%;border:none;border-bottom: black 1px solid"/>
+
+    </div>
+    <!--    <div id="info">
+            <fieldset>
+                <legend>Delivery Information</legend>
+                <label>From Party</label>
+                <input id="fromParty" type="text" style="font-size: 18px;font-weight: bold;position:absolute;left:15%;border:none" readonly/>
+                <label  style="position: absolute;left: 50%">To Party</label>
+                <input id="toParty"   type="text" style="font-size: 18px;font-weight: bold;position:absolute;left:65%;border:none" readonly/>
+            </fieldset>
+        </div>-->
+    <div id="progressBar" class="progressBar">
+        <div class="progressBarDiv">
+        </div>
+        <span id="concentric1" class="span1"></span>
+        <span id="concentric2" class="span1" style="left: 25%"></span>
+        <span id="concentric3" class="span1" style="left: 50%"></span>
+        <span id="concentric4" class="span1" style="left: 75%"></span>
+        <span id="concentric5" class="span1" style="left: 100%"></span>
+    </div>
+    <div id="milestones" style="width: 80%;
+            height: 50px;
+            position: relative;
+            margin: 50px 0 0 80px;">
+
+        <label id="OrderAccepted" style="font-family:Arial;color: #ccc;position: absolute;left: 0%">Order Accepted</label>
+        <label id="PickedUp" style="font-family:Arial;color: #ccc;position: absolute;left: 25%">Picked Up</label>
+        <label id="InTransit" style="font-family:Arial;color: #ccc;position: absolute;left: 50%">In transit</label>
+        <label id="OutForDelivery" style="font-family:Arial;color: #ccc;position: absolute;left: 75%">Out for Delivery</label>
+        <label id="Delivered" style="font-family:Arial;color: #ccc;position: absolute;left: 100%">Delivered</label>
+    </div>
+    <div id="detail" style="width: 90%;
+            height: 500px;
+            position: relative;
+            margin: 50px 0 0 50px;border: 1px solid #F2F2F2">
+
+        <div style="height:80px;background-color: #F2F2F2">
+            <label style="font-family:Arial;line-height:80px;font-size: 21px;font-weight: bold">Tracking Details:</label>
+        </div>
+        <table id="tab">
+
+
+        </table>
+    </div>
+</div>
+
+<div id="return" style="display: none">
+    <div id="head-r" style="margin: 20px">
+        <label style="font-family:Arial;">Tracking#:</label>
+        <input id="tracking-r" type="text" style="font-family:Arial;width:300px;font-size: 18px;font-weight: bold; position:absolute;left:15%;border:none;"/>
+
+
+        <label style="font-family:Arial;position: absolute;left: 50%">Expected Delivery:</label>
+        <input id="expectedDelivery-r" readonly  type="text" style="font-family:Arial;width:300px;font-size: 18px;font-weight: bold;position:absolute;left:65%;border:none;border-bottom: black 1px solid"/>
+
+    </div>
+    <!--    <div id="info">
+            <fieldset>
+                <legend>Delivery Information</legend>
+                <label>From Party</label>
+                <input id="fromParty" type="text" style="font-size: 18px;font-weight: bold;position:absolute;left:15%;border:none" readonly/>
+                <label  style="position: absolute;left: 50%">To Party</label>
+                <input id="toParty"   type="text" style="font-size: 18px;font-weight: bold;position:absolute;left:65%;border:none" readonly/>
+            </fieldset>
+        </div>-->
+    <div id="progressBar-r" class="progressBar">
+        <div class="progressBarDiv">
+        </div>
+        <span id="concentric1-r" class="span1"></span>
+        <span id="concentric2-r" class="span1" style="left: 25%"></span>
+        <span id="concentric3-r" class="span1" style="left: 50%"></span>
+        <span id="concentric4-r" class="span1" style="left: 75%"></span>
+        <span id="concentric5-r" class="span1" style="left: 100%"></span>
+    </div>
+    <div id="milestones-r" style="width: 80%;
+            height: 50px;
+            position: relative;
+            margin: 50px 0 0 80px;">
+
+        <label id="OrderAccepted-r" style="font-family:Arial;color: #ccc;position: absolute;left: 0%">Order Accepted</label>
+        <label id="PickedUp-r" style="font-family:Arial;color: #ccc;position: absolute;left: 25%">Picked Up</label>
+        <label id="InTransit-r" style="font-family:Arial;color: #ccc;position: absolute;left: 50%">In transit</label>
+        <label id="OutForDelivery-r" style="font-family:Arial;color: #ccc;position: absolute;left: 75%">Out for Delivery</label>
+        <label id="Delivered-r" style="font-family:Arial;color: #ccc;position: absolute;left: 100%">Delivered</label>
+    </div>
+    <div id="detail-r" style="width: 90%;
+            height: 500px;
+            position: relative;
+            margin: 50px 0 0 50px;border: 1px solid #F2F2F2">
+
+        <div style="height:80px;background-color: #F2F2F2">
+            <label style="font-family:Arial;line-height:80px;font-size: 21px;font-weight: bold">Tracking Details:</label>
+        </div>
+        <table id="tab-r">
+
+
+        </table>
+    </div>
+</div>
+</body>
+</html>

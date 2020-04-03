@@ -19,19 +19,18 @@ public class ConfluentKafkaProducer {
     private static final CloseableHttpClient client = HttpClients.createDefault();
     private static final String BASE_URL = "https://qa.api.dev4apps.com/kafkaproxy";
 
-
+    static enum Last {t1,t2};
     public static void main(String[] args) throws IOException {
-        String result = "";
-
-        List<ConsumerRecordResponseDTO> record = JSONObject.parseArray(result, ConsumerRecordResponseDTO.class);
-        System.out.println(record);
+        Last last;
+        send("Scm-WmsToolkit-OrderEvents_STG",null);
     }
 
-    public void send(String topic, ProducerRecord producerRecord) throws IOException {
+    public static void send(String topic, ProducerRecord producerRecord) throws IOException {
         String url = BASE_URL + "/topics/" + topic;
         HttpPost post = new HttpPost(url);
         HttpHost proxy = new HttpHost("172.16.100.2", 8080);
-        RequestConfig requestConfig = RequestConfig.custom().setProxy(proxy).build();
+        RequestConfig requestConfig = RequestConfig.custom().setProxy(proxy)
+                .setConnectTimeout(10).setSocketTimeout(10).build();
         post.setConfig(requestConfig);
         String data = "{\"records\":[{\"value\":{\"brand\":\"YSL\",\"brandCode\":\"YS\",\"content\":{\"docCreationDate\":1445326387000,\"docType\":\"ASN\",\"items\":[{\"cartonNumber\":0,\"itemLine\":0,\"lockedQty\":0,\"prodDate\":0,\"quantityReceived\":0,\"quantityToBeReceived\":5,\"referenceDetailId\":0},{\"cartonNumber\":0,\"itemLine\":0,\"lockedQty\":0,\"prodDate\":0,\"quantityReceived\":0,\"quantityToBeReceived\":5,\"referenceDetailId\":0}],\"physReceiptDate\":1441848792685,\"putAwayDate\":0,\"receiptDate\":0,\"receiptNo\":0,\"uom\":\"EA\"},\"messageId\":\"162-ASN201509100015\",\"schema\":\"kering.toolkit.goodsReceipt\",\"schemaVersion\":\"2.0\",\"sender\":\"CARGO-Shanghai\",\"senderCountry\":\"CN\",\"timestamp\":\"2019-08-27T02:42:05.764Z\"}}]}\n";
         String authorization = "2QPyzxWf8krUAatfhw2rdywd2fka";

@@ -14,8 +14,6 @@ public interface BaseProjectInfoMapper extends MyMapper<BaseProjectInfo> {
 
     int updateProject(BaseProjectInfo baseProjectInfo);
 
-    BaseProjectInfo getProjectByNameOrCode(@Param("projectName")String name, @Param("projectCode")String code);
-
     BaseProjectInfo getProjectByProjectName(@Param("projectName")String projectName, @Param("id") Integer id);
 
     List<BaseProjectInfo> getProjects();

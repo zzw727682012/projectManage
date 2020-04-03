@@ -14,8 +14,13 @@ import com.producer.orderevents.Pieces;
 import com.producer.stockcheck.BaseResponse;
 import com.producer.stockcheck.ContentDto;
 import com.producer.stockcheck.Offsets;
+import org.apache.http.HttpHost;
+import org.apache.http.client.config.RequestConfig;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 
 import java.io.*;
@@ -32,36 +37,16 @@ public class CommomHttpClient {
     public static final String SUBSCRIPTION ="/consumers/cargo/instances/%s/subscription";
 
     public static void main(String[] args) throws ParseException, IOException, ClassNotFoundException {
+        String url = "http://localhost:8080/test";
+        HttpGet get = new HttpGet(url);
+        RequestConfig requestConfig = RequestConfig.custom()
+                .setConnectTimeout(10000).setSocketTimeout(10000).build();
+        get.setConfig(requestConfig);
+        CloseableHttpResponse res = client.execute(get);
+        String result = EntityUtils.toString(res.getEntity(), "UTF-8");// 返回json格式：
+        System.out.println(res.getStatusLine().getStatusCode());
+        System.out.println(result);
 
-        ExecutorService executor =  Executors.newFixedThreadPool(5);
-        final CommomHttpClient commomHttpClient=new CommomHttpClient();
-        int i =0;
-        while (i<5) {
-            executor.execute(new Runnable() {
-                @Override
-                public void run() {
-                    commomHttpClient.count(8);
-                }
-            });
-            executor.execute(new Runnable() {
-                @Override
-                public void run() {
-                    commomHttpClient.isDamagedWarehouse();
-                }
-            });
-            i++;
-        }
- /*       ExecutorService executor1 =  Executors.newFixedThreadPool(5);
-        int a=0;
-        while (a<100){
-            executor1.execute(new Runnable() {
-                @Override
-                public void run() {
-                    commomHttpClient.isDamagedWarehouse();
-                }
-            });
-            a++;
-        }*/
     }
     // n=ax+by  a,b有多少种组合
     public synchronized void count(int n) {

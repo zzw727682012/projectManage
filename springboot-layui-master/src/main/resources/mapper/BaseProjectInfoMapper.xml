@@ -7,22 +7,23 @@
     -->
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="project_name" jdbcType="VARCHAR" property="projectName" />
-    <result column="project_type" jdbcType="VARCHAR" property="projectType" />
     <result column="project_source" jdbcType="VARCHAR" property="projectSource" />
-    <result column="project_code" jdbcType="VARCHAR" property="projectCode" />
     <result column="project_budget_amount" jdbcType="NUMERIC" property="projectBudgetAmount" />
     <result column="project_account_amount" jdbcType="NUMERIC" property="projectAccountAmount" />
     <result column="project_manager_id" jdbcType="INTEGER" property="projectManagerId" />
-    <result column="project_accessory" jdbcType="VARCHAR" property="projectAccessory" />
+    <result column="technical_report" jdbcType="VARCHAR" property="technicalReport" />
+    <result column="final_report" jdbcType="VARCHAR" property="finalReport" />
+    <result column="node_count" jdbcType="INTEGER" property="nodeCount" />
     <result column="project_researchers" jdbcType="VARCHAR" property="projectResearchers" />
     <result column="create_time" jdbcType="VARCHAR" property="createTime" />
     <result column="expiration_time" jdbcType="VARCHAR" property="expirationTime" />
+    <result column="start_time" jdbcType="VARCHAR" property="startTime" />
     <result column="if_finish" jdbcType="VARCHAR" property="finish" />
   </resultMap>
 
   <sql id="baseColumn">
-    id,project_name,project_type,project_source,project_code,project_budget_amount,project_account_amount,
-    project_manager_id,project_accessory,create_time,expiration_time,if_finish,project_researchers
+    id,project_name,project_source,project_budget_amount,project_account_amount,project_manager_id,
+    technical_report,final_report,node_count,start_time,create_time,expiration_time,if_finish,project_researchers
   </sql>
 
 
@@ -32,14 +33,8 @@
       <if test="projectName != null">
         project_name = #{projectName},
       </if>
-      <if test="projectType != null">
-        project_type = #{projectType},
-      </if>
       <if test="projectSource != null">
         project_source = #{projectSource},
-      </if>
-      <if test="projectCode != null">
-        project_code = #{projectCode},
       </if>
       <if test="projectBudgetAmount != null">
         project_budget_amount = #{projectBudgetAmount},
@@ -53,14 +48,23 @@
       <if test="projectResearchers != null">
         project_researchers = #{projectResearchers},
       </if>
+      <if test="startTime != null">
+        start_time = #{startTime},
+      </if>
       <if test="expirationTime != null">
         expiration_time = #{expirationTime},
       </if>
       <if test="finish != null">
         if_finish = #{finish},
       </if>
-      <if test="projectAccessory != null">
-        project_accessory = #{projectAccessory}
+      <if test="nodeCount != null">
+        node_count = #{nodeCount}
+      </if>
+      <if test="finalReport != null">
+        final_report = #{finalReport}
+      </if>
+      <if test="technicalReport != null">
+        technical_report = #{technicalReport}
       </if>
     </set>
     WHERE id = #{id}
@@ -83,30 +87,15 @@
     </if>
   </select>
 
-  <select id="getProjectByNameOrCode" resultMap="BaseResultMap">
-    SELECT <include refid="baseColumn"/>
-    FROM base_project_info
-    WHERE 1 = 1
-    <if test="projectName != null">
-      and project_name = #{projectName}
-    </if>
-    <if test="projectCode != null">
-      and project_code = #{projectCode}
-    </if>
-  </select>
-
   <select id="getProjectList" resultType="com.project.manager.dto.BaseProjectInfoDTO">
     SELECT p.id as id, p.project_name AS projectName ,p.project_code AS projectCode,
     p.project_budget_amount AS projectBudgetAmount ,p.project_account_amount AS projectAccountAmount,
     (SELECT user_name FROM base_project_user as r WHERE r.id = p.project_manager_id) AS projectManagerName,
-    p.project_researchers AS projectResearchers ,p.create_time AS createTime, p.expiration_time AS expirationTime, p.if_finish as finish
+    p.project_researchers AS projectResearchers ,p.start_time AS startTime, p.expiration_time AS expirationTime, p.if_finish as finish
     FROM base_project_info as p
     <where>
       <if test="projectName != null and projectName != '' ">
         and project_name LIKE '%' #{projectName} '%'
-      </if>
-      <if test="projectCode != null and projectCode != '' ">
-        and project_code = #{projectCode}
       </if>
       <if test="startTime != null and startTime != '' ">
         and create_time &gt;  #{startTime}
@@ -114,14 +103,8 @@
       <if test="endTime != null and endTime != '' ">
         and create_time &lt;  #{endTime}
       </if>
-      <if test="minAmount != null and minAmount != '' ">
-        and project_budget_amount &gt;  #{minAmount}
-      </if>
-      <if test="maxAmount != null and maxAmount != '' ">
-        and project_budget_amount &lt;  #{maxAmount}
-      </if>
       <if test="projectManagerName != null and projectManagerName != '' ">
-        and project_manager_id like CONCAT('%', (SELECT id FROM base_project_user WHERE user_name=#{projectManagerName}), '%')
+        and project_manager_id = (SELECT id FROM base_project_user WHERE user_name=#{projectManagerName})
       </if>
       <if test="projectUserName != null and projectUserName != '' ">
         and project_researchers like CONCAT('%', (SELECT id FROM base_project_user WHERE user_name=#{projectUserName}), '%')

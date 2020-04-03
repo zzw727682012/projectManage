@@ -26,7 +26,7 @@ public class Test {
 
         ExecutorService executorService = Executors.newFixedThreadPool(10);
 
-        for (int i =1; i <=2000;i ++){
+        for (int i =200; i <=300;i ++){
             ProducerRecordDTO<ReleaseOrderRecordDTO> record = new ProducerRecordDTO();
             ReleaseOrderRecordDTO recordDTO = new ReleaseOrderRecordDTO();
             List<ReleaseOrderRecordDTO> recordDTOList = new ArrayList<ReleaseOrderRecordDTO>();
@@ -42,7 +42,7 @@ public class Test {
             ReleaseOrderReleaseLineDTO releaseLineDTO2 = new ReleaseOrderReleaseLineDTO();
             List<ReleaseOrderReleaseLineDTO> releaseLineDTOList = new ArrayList<ReleaseOrderReleaseLineDTO>();
             releaseLineDTOList.add(releaseLineDTO1);
-            releaseLineDTOList.add(releaseLineDTO2);
+            //releaseLineDTOList.add(releaseLineDTO2);
             contentDTO.setReleaseLine(releaseLineDTOList);
             valueDTO.setTimestamp(getTimestamp());
             valueDTO.setBrand("AMQ");
@@ -54,15 +54,15 @@ public class Test {
             valueDTO.setIntendedReceiver("Cargo-Shanghai");
             String messageId = UUID.randomUUID().toString();
             valueDTO.setMessageId(messageId);
-            contentDTO.setOrderId("10");
+            contentDTO.setOrderId("10815");
             contentDTO.setOrderType("E");
             contentDTO.setWhsCode("54176");
-            contentDTO.setPurchaseOrder("201909231710004200");
+            contentDTO.setPurchaseOrder("10000000922");
             contentDTO.setCapturedDate(getTimestamp());
-            contentDTO.setCustomerFirstName("Fay");
-            contentDTO.setCustomerLastName("Luo");
-            contentDTO.setCustomerPhone("18521569855");
-            Long lo = 20011800000000l;
+            contentDTO.setCustomerFirstName("ff");
+            contentDTO.setCustomerLastName("fd");
+            contentDTO.setCustomerPhone("13333333333");
+            Long lo = 20040200001000l;
             contentDTO.setReleaseId(String.valueOf(lo+i));
             contentDTO.setCarrierCode("SF");
             contentDTO.setCurrencyCode("CNY");
@@ -74,28 +74,19 @@ public class Test {
             addressDTO.setAddress2("上海市");
             addressDTO.setAddress3("黄浦区");
             addressDTO.setCity("上海市");
-            releaseLineDTO1.setSkuCode("807582633");
+            releaseLineDTO1.setSkuCode("808594255");
             releaseLineDTO1.setOrderLineId("1");
             releaseLineDTO1.setReleaseLineId("1");
             releaseLineDTO1.setQuantity(1.0);
-            releaseLineDTO2.setSkuCode("808051037");
+          /*  releaseLineDTO2.setSkuCode("808594255");
             releaseLineDTO2.setOrderLineId("2");
             releaseLineDTO2.setQuantity(2.0);
-            releaseLineDTO2.setReleaseLineId("2");
+            releaseLineDTO2.setReleaseLineId("2");*/
             String data = JSONObject.toJSONString(record);
             System.out.println(i + "~~~~~~~~~~~~~~~~~~~~~~~"+data);
            // String data1 = getLabelling(i);
-            //System.out.println(i + "~~~~~~~~~~~~~~~~~~~~~~~"+data1);
-            executorService.execute(()->{
-               try {
-                    send("Scm-WmsToolkit-ReleaseOrder", data);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
 
-
-            });
-           // send("Scm-WmsToolkit-Labelling", data1);
+            send("Scm-WmsToolkit-ReleaseOrder", data);
 
         }
 

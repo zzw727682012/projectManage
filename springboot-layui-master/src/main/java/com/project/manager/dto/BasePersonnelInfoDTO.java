@@ -16,45 +16,13 @@ public class BasePersonnelInfoDTO {
 
     private String userGraduateInstitutions;
 
-    private String userPhoto;
+    private String userOrganization;
 
-    private String userFatherName;
-
-    private String userFatherAge;
-
-    private String userFatherJob;
-
-    private String userMotherName;
-
-    private String userMotherAge;
-
-    private String userMotherJob;
+    private String userTeachingOffice;
 
     private String userHomeAddress;
 
     private String createTime;
-
-    @Override
-    public String toString() {
-        return "BasePersonnelInfoDTO{" +
-                "id=" + id +
-                ", userName='" + userName + '\'' +
-                ", userSex=" + userSex +
-                ", userBirthday='" + userBirthday + '\'' +
-                ", userPoliticsStatus='" + userPoliticsStatus + '\'' +
-                ", userJoinTime='" + userJoinTime + '\'' +
-                ", userGraduateInstitutions='" + userGraduateInstitutions + '\'' +
-                ", userPhoto='" + userPhoto + '\'' +
-                ", userFatherName='" + userFatherName + '\'' +
-                ", userFatherAge='" + userFatherAge + '\'' +
-                ", userFatherJob='" + userFatherJob + '\'' +
-                ", userMotherName='" + userMotherName + '\'' +
-                ", userMotherAge='" + userMotherAge + '\'' +
-                ", userMotherJob='" + userMotherJob + '\'' +
-                ", userHomeAddress='" + userHomeAddress + '\'' +
-                ", createTime='" + createTime + '\'' +
-                '}';
-    }
 
     public Integer getId() {
         return id;
@@ -112,60 +80,20 @@ public class BasePersonnelInfoDTO {
         this.userGraduateInstitutions = userGraduateInstitutions;
     }
 
-    public String getUserPhoto() {
-        return userPhoto;
+    public String getUserOrganization() {
+        return userOrganization;
     }
 
-    public void setUserPhoto(String userPhoto) {
-        this.userPhoto = userPhoto;
+    public void setUserOrganization(String userOrganization) {
+        this.userOrganization = userOrganization;
     }
 
-    public String getUserFatherName() {
-        return userFatherName;
+    public String getUserTeachingOffice() {
+        return userTeachingOffice;
     }
 
-    public void setUserFatherName(String userFatherName) {
-        this.userFatherName = userFatherName;
-    }
-
-    public String getUserFatherAge() {
-        return userFatherAge;
-    }
-
-    public void setUserFatherAge(String userFatherAge) {
-        this.userFatherAge = userFatherAge;
-    }
-
-    public String getUserFatherJob() {
-        return userFatherJob;
-    }
-
-    public void setUserFatherJob(String userFatherJob) {
-        this.userFatherJob = userFatherJob;
-    }
-
-    public String getUserMotherName() {
-        return userMotherName;
-    }
-
-    public void setUserMotherName(String userMotherName) {
-        this.userMotherName = userMotherName;
-    }
-
-    public String getUserMotherAge() {
-        return userMotherAge;
-    }
-
-    public void setUserMotherAge(String userMotherAge) {
-        this.userMotherAge = userMotherAge;
-    }
-
-    public String getUserMotherJob() {
-        return userMotherJob;
-    }
-
-    public void setUserMotherJob(String userMotherJob) {
-        this.userMotherJob = userMotherJob;
+    public void setUserTeachingOffice(String userTeachingOffice) {
+        this.userTeachingOffice = userTeachingOffice;
     }
 
     public String getUserHomeAddress() {
@@ -182,5 +110,22 @@ public class BasePersonnelInfoDTO {
 
     public void setCreateTime(String createTime) {
         this.createTime = createTime;
+    }
+
+    @Override
+    public String toString() {
+        return "BasePersonnelInfoDTO{" +
+                "id=" + id +
+                ", userName='" + userName + '\'' +
+                ", userSex='" + userSex + '\'' +
+                ", userBirthday='" + userBirthday + '\'' +
+                ", userPoliticsStatus='" + userPoliticsStatus + '\'' +
+                ", userJoinTime='" + userJoinTime + '\'' +
+                ", userGraduateInstitutions='" + userGraduateInstitutions + '\'' +
+                ", userOrganization='" + userOrganization + '\'' +
+                ", userTeachingOffice='" + userTeachingOffice + '\'' +
+                ", userHomeAddress='" + userHomeAddress + '\'' +
+                ", createTime='" + createTime + '\'' +
+                '}';
     }
 }

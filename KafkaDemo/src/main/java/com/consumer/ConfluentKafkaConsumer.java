@@ -35,8 +35,7 @@ public class ConfluentKafkaConsumer {
 
         final ConfluentKafkaConsumer consumer = new ConfluentKafkaConsumer();
         consumer.initInstance();
-        consumer.subscription("Scm-WmsToolkit-RMA-Cargo");
-        consumer.getOffsets();
+        consumer.subscription("Scm-WmsToolkit-ReleaseOrder-Cargo");
         consumer.getRecords();
         consumer.getRecords();
         consumer.getRecords();
@@ -44,7 +43,6 @@ public class ConfluentKafkaConsumer {
 //        consumer.getRecords();
        // consumer.postOffsets();
 
-        consumer.getOffsets();
 
         consumer.httpDelete(sub);
         consumer.httpDelete(instance);
@@ -89,7 +87,7 @@ public class ConfluentKafkaConsumer {
         topicList.add(topic);
         String data = "{ \n" +
                 "  \"topics\" : [ \n" +
-                "    \"Scm-WmsToolkit-Labelling-Cargo\"\n" +
+                "    \"Scm-WmsToolkit-ReleaseOrder-Cargo\"\n" +
                 "  ] \n" +
                 "}\n";
         String url = BASE_URL + "/consumers/cargo_colin/instances/colin/subscription";
@@ -174,7 +172,7 @@ public class ConfluentKafkaConsumer {
 
                     List<PostOffsetDTO> posList = new ArrayList<PostOffsetDTO>();
                     PostOffsetDTO dto =new PostOffsetDTO();
-                    dto.setTopic("Scm-WmsToolkit-Labelling-Cargo");
+                    dto.setTopic("Scm-WmsToolkit-ReleaseOrder-Cargo");
                     dto.setOffset(r.getOffset());
                     dto.setPartition(r.getPartition());
                     posList.add(dto);

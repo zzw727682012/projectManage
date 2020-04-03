@@ -12,21 +12,15 @@
         <result column="user_politics_status" jdbcType="VARCHAR" property="userPoliticsStatus" />
         <result column="user_join_time" jdbcType="VARCHAR" property="userJoinTime" />
         <result column="user_graduate_institutions" jdbcType="VARCHAR" property="userGraduateInstitutions" />
-        <result column="user_photo" jdbcType="VARCHAR" property="userPhoto" />
-        <result column="user_father_name" jdbcType="VARCHAR" property="userFatherName" />
-        <result column="user_father_age" jdbcType="VARCHAR" property="userFatherAge" />
-        <result column="user_father_job" jdbcType="VARCHAR" property="userFatherJob" />
-        <result column="user_mother_name" jdbcType="VARCHAR" property="userMotherName" />
-        <result column="user_mother_job" jdbcType="VARCHAR" property="userMotherJob" />
-        <result column="user_mother_age" jdbcType="VARCHAR" property="userMotherAge" />
+        <result column="user_organization" jdbcType="VARCHAR" property="userOrganization" />
+        <result column="user_teaching_office" jdbcType="VARCHAR" property="userTeachingOffice" />
         <result column="user_home_address" jdbcType="VARCHAR" property="userHomeAddress" />
         <result column="create_time" jdbcType="VARCHAR" property="createTime" />
     </resultMap>
 
     <sql id="baseColumn">
     id,user_name,user_sex,user_birthday,user_politics_status,user_join_time,user_graduate_institutions,
-    user_photo,user_father_name,user_father_age,user_father_job,user_mother_name,user_mother_job,user_mother_age,
-    user_home_address,create_time
+    user_organization,user_teaching_office,user_home_address,create_time
     </sql>
 
     <select id="getProjectUserById" resultMap="BaseResultMap">
@@ -38,8 +32,7 @@
     <select id="getPersonnelList" resultType="com.project.manager.dto.BasePersonnelInfoDTO">
         SELECT id as id,user_name AS userName ,user_sex AS userSex,user_birthday as userBirthday,
         user_politics_status as userPoliticsStatus,user_join_time as userJoinTime,user_graduate_institutions as userGraduateInstitutions,
-        user_photo AS userPhoto, user_father_name AS userFatherName, user_father_age AS userFatherAge, user_father_job as userFatherJob,
-        user_mother_name AS userMotherName, user_mother_job AS userMotherJob, user_mother_age AS userMotherAge, user_home_address as userHomeAddress,
+        user_organization AS userOrganization, user_teaching_office AS userTeachingOffice, user_home_address as userHomeAddress,
         create_time as createTime
         FROM base_project_user
         <where>
@@ -70,26 +63,11 @@
             <if test="userGraduateInstitutions != null">
                 user_graduate_institutions = #{userGraduateInstitutions},
             </if>
-            <if test="userPhoto != null">
-                user_photo = #{userPhoto},
+            <if test="userOrganization != null">
+                user_organization = #{userOrganization},
             </if>
-            <if test="userFatherName != null">
-                user_father_name = #{userFatherName},
-            </if>
-            <if test="userFatherAge != null">
-                user_father_age = #{userFatherAge},
-            </if>
-            <if test="userFatherJob != null">
-                user_father_job = #{userFatherJob},
-            </if>
-            <if test="userMotherName != null">
-                user_mother_name = #{userMotherName},
-            </if>
-            <if test="userMotherJob != null">
-                user_mother_job = #{userMotherJob},
-            </if>
-            <if test="userMotherAge != null">
-                user_mother_age = #{userMotherAge},
+            <if test="userTeachingOffice != null">
+                user_teaching_office = #{userTeachingOffice},
             </if>
             <if test="userHomeAddress != null">
                 user_home_address = #{userHomeAddress}

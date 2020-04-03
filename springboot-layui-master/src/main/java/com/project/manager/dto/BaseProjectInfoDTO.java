@@ -6,8 +6,6 @@ public class BaseProjectInfoDTO {
 
     private String projectName;
 
-    private String projectCode;
-
     private Double projectBudgetAmount;
 
     private Double projectAccountAmount;
@@ -18,7 +16,9 @@ public class BaseProjectInfoDTO {
 
     private String projectResearchersName;
 
-    private String createTime;
+    private Integer nodeCount;
+
+    private String startTime;
 
     private String expirationTime;
 
@@ -26,26 +26,6 @@ public class BaseProjectInfoDTO {
 
     public String getProjectResearchersName() {
         return projectResearchersName;
-    }
-
-    public void setProjectResearchersName(String projectResearchersName) {
-        this.projectResearchersName = projectResearchersName;
-    }
-
-    public String getProjectResearchers() {
-        return projectResearchers;
-    }
-
-    public void setProjectResearchers(String projectResearchers) {
-        this.projectResearchers = projectResearchers;
-    }
-
-    public String getFinish() {
-        return finish;
-    }
-
-    public void setFinish(String finish) {
-        this.finish = finish;
     }
 
     public Integer getId() {
@@ -62,14 +42,6 @@ public class BaseProjectInfoDTO {
 
     public void setProjectName(String projectName) {
         this.projectName = projectName;
-    }
-
-    public String getProjectCode() {
-        return projectCode;
-    }
-
-    public void setProjectCode(String projectCode) {
-        this.projectCode = projectCode;
     }
 
     public Double getProjectBudgetAmount() {
@@ -96,12 +68,32 @@ public class BaseProjectInfoDTO {
         this.projectManagerName = projectManagerName;
     }
 
-    public String getCreateTime() {
-        return createTime;
+    public String getProjectResearchers() {
+        return projectResearchers;
     }
 
-    public void setCreateTime(String createTime) {
-        this.createTime = createTime;
+    public void setProjectResearchers(String projectResearchers) {
+        this.projectResearchers = projectResearchers;
+    }
+
+    public void setProjectResearchersName(String projectResearchersName) {
+        this.projectResearchersName = projectResearchersName;
+    }
+
+    public Integer getNodeCount() {
+        return nodeCount;
+    }
+
+    public void setNodeCount(Integer nodeCount) {
+        this.nodeCount = nodeCount;
+    }
+
+    public String getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
     }
 
     public String getExpirationTime() {
@@ -112,18 +104,26 @@ public class BaseProjectInfoDTO {
         this.expirationTime = expirationTime;
     }
 
+    public String getFinish() {
+        return finish;
+    }
+
+    public void setFinish(String finish) {
+        this.finish = finish;
+    }
+
     @Override
     public String toString() {
         return "BaseProjectInfoDTO{" +
                 "id=" + id +
                 ", projectName='" + projectName + '\'' +
-                ", projectCode='" + projectCode + '\'' +
                 ", projectBudgetAmount=" + projectBudgetAmount +
                 ", projectAccountAmount=" + projectAccountAmount +
                 ", projectManagerName='" + projectManagerName + '\'' +
                 ", projectResearchers='" + projectResearchers + '\'' +
                 ", projectResearchersName='" + projectResearchersName + '\'' +
-                ", createTime='" + createTime + '\'' +
+                ", nodeCount=" + nodeCount +
+                ", startTime='" + startTime + '\'' +
                 ", expirationTime='" + expirationTime + '\'' +
                 ", finish='" + finish + '\'' +
                 '}';

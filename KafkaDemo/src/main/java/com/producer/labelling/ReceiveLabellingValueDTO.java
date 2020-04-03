@@ -95,5 +95,23 @@ public class ReceiveLabellingValueDTO {
 	public void setAttachments(List<ReceiveLabellingAttachmentsDTO> attachments) {
 		this.attachments = attachments;
 	}
-	
+
+	@Override
+	public String toString() {
+		return "ReceiveLabellingValueDTO{" +
+				"timestamp='" + timestamp + '\'' +
+				", messageId='" + messageId + '\'' +
+				", sender='" + sender + '\'' +
+				", senderCountry='" + senderCountry + '\'' +
+				", senderLocation='" + senderLocation + '\'' +
+				", correlationId='" + correlationId + '\'' +
+				", intendedReceiver='" + intendedReceiver + '\'' +
+				", schema='" + schema + '\'' +
+				", schemaVersion='" + schemaVersion + '\'' +
+				", brandCode='" + brandCode + '\'' +
+				", brand='" + brand + '\'' +
+				", content=" + content +
+				", attachments=" + attachments +
+				'}';
+	}
 }

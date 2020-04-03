@@ -33,26 +33,11 @@ public class BaseProjectUser {
     @Column(name = "user_graduate_institutions")
     private String userGraduateInstitutions;
 
-    @Column(name = "user_photo")
-    private String userPhoto;
+    @Column(name = "user_organization")
+    private String userOrganization;
 
-    @Column(name = "user_father_name")
-    private String userFatherName;
-
-    @Column(name = "user_father_age")
-    private String userFatherAge;
-
-    @Column(name = "user_father_job")
-    private String userFatherJob;
-
-    @Column(name = "user_mother_name")
-    private String userMotherName;
-
-    @Column(name = "user_mother_Age")
-    private String userMotherAge;
-
-    @Column(name = "user_mother_job")
-    private String userMotherJob;
+    @Column(name = "user_teaching_office")
+    private String userTeachingOffice;
 
     @Column(name = "user_home_address")
     private String userHomeAddress;
@@ -116,68 +101,28 @@ public class BaseProjectUser {
         this.userGraduateInstitutions = userGraduateInstitutions;
     }
 
-    public String getUserPhoto() {
-        return userPhoto;
-    }
-
-    public void setUserPhoto(String userPhoto) {
-        this.userPhoto = userPhoto;
-    }
-
-    public String getUserFatherName() {
-        return userFatherName;
-    }
-
-    public void setUserFatherName(String userFatherName) {
-        this.userFatherName = userFatherName;
-    }
-
-    public String getUserFatherAge() {
-        return userFatherAge;
-    }
-
-    public void setUserFatherAge(String userFatherAge) {
-        this.userFatherAge = userFatherAge;
-    }
-
-    public String getUserFatherJob() {
-        return userFatherJob;
-    }
-
-    public void setUserFatherJob(String userFatherJob) {
-        this.userFatherJob = userFatherJob;
-    }
-
-    public String getUserMotherName() {
-        return userMotherName;
-    }
-
-    public void setUserMotherName(String userMotherName) {
-        this.userMotherName = userMotherName;
-    }
-
-    public String getUserMotherAge() {
-        return userMotherAge;
-    }
-
-    public void setUserMotherAge(String userMotherAge) {
-        this.userMotherAge = userMotherAge;
-    }
-
-    public String getUserMotherJob() {
-        return userMotherJob;
-    }
-
-    public void setUserMotherJob(String userMotherJob) {
-        this.userMotherJob = userMotherJob;
-    }
-
     public String getUserHomeAddress() {
         return userHomeAddress;
     }
 
     public void setUserHomeAddress(String userHomeAddress) {
         this.userHomeAddress = userHomeAddress;
+    }
+
+    public String getUserOrganization() {
+        return userOrganization;
+    }
+
+    public void setUserOrganization(String userOrganization) {
+        this.userOrganization = userOrganization;
+    }
+
+    public String getUserTeachingOffice() {
+        return userTeachingOffice;
+    }
+
+    public void setUserTeachingOffice(String userTeachingOffice) {
+        this.userTeachingOffice = userTeachingOffice;
     }
 
     public String getCreateTime() {
@@ -198,13 +143,8 @@ public class BaseProjectUser {
                 ", userPoliticsStatus='" + userPoliticsStatus + '\'' +
                 ", userJoinTime='" + userJoinTime + '\'' +
                 ", userGraduateInstitutions='" + userGraduateInstitutions + '\'' +
-                ", userPhoto='" + userPhoto + '\'' +
-                ", userFatherName='" + userFatherName + '\'' +
-                ", userFatherAge='" + userFatherAge + '\'' +
-                ", userFatherJob='" + userFatherJob + '\'' +
-                ", userMotherName='" + userMotherName + '\'' +
-                ", userMotherAge='" + userMotherAge + '\'' +
-                ", userMotherJob='" + userMotherJob + '\'' +
+                ", userOrganization='" + userOrganization + '\'' +
+                ", userTeachingOffice='" + userTeachingOffice + '\'' +
                 ", userHomeAddress='" + userHomeAddress + '\'' +
                 ", createTime='" + createTime + '\'' +
                 '}';
