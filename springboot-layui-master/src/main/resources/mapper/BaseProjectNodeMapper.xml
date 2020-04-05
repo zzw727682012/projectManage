@@ -1,30 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.project.manager.dao.BaseProjectPlanMapper">
-    <resultMap id="BaseResultMap" type="com.project.manager.pojo.BaseProjectPlan">
+<mapper namespace="com.project.manager.dao.BaseProjectNodeMapper">
+    <resultMap id="BaseResultMap" type="com.project.manager.pojo.BaseProjectNode">
         <!--
           WARNING - @mbg.generated
         -->
         <id column="id" jdbcType="INTEGER" property="id" />
         <result column="project_name" jdbcType="VARCHAR" property="projectName" />
         <result column="project_id" jdbcType="INTEGER" property="projectId" />
-        <result column="project_code" jdbcType="VARCHAR" property="projectCode" />
         <result column="project_manager_id" jdbcType="INTEGER" property="projectManagerId" />
         <result column="project_node_name" jdbcType="VARCHAR" property="projectNodeName" />
         <result column="project_node_finish" jdbcType="VARCHAR" property="projectNodeFinish" />
-        <result column="project_performance" jdbcType="VARCHAR" property="projectPerformance" />
-        <result column="project_node_delay_reason" jdbcType="VARCHAR" property="projectNodeDelayReason" />
+        <result column="project_node_attachment" jdbcType="VARCHAR" property="nodeAttachment" />
         <result column="expiration_time" jdbcType="VARCHAR" property="expirationTime" />
         <result column="create_time" jdbcType="VARCHAR" property="createTime" />
     </resultMap>
 
     <sql id="baseColumn">
-    id,project_name,project_id,project_code,project_manager_id,project_node_finish,project_performance,
-    project_node_delay_reason,expiration_time,project_node_name,create_time
+    id,project_name,project_id,project_manager_id,project_node_finish,
+    project_node_attachment,expiration_time,project_node_name,create_time
   </sql>
 
-    <update id="updateProjectPlan">
-        UPDATE base_project_plan
+    <select id="getProjectNodeById" resultMap="BaseResultMap">
+        SELECT <include refid="baseColumn"/>
+        FROM base_project_node
+        WHERE id = #{id}
+    </select>
+    <update id="updateProjectNode">
+        UPDATE base_project_node
         <set>
             <if test="projectName != null">
                 project_name = #{projectName},
@@ -35,20 +38,14 @@
             <if test="projectNodeName != null">
                 project_node_name = #{projectNodeName},
             </if>
-            <if test="projectCode != null">
-                project_code = #{projectCode},
-            </if>
             <if test="projectNodeFinish != null">
                 project_node_finish = #{projectNodeFinish},
             </if>
-            <if test="projectPerformance != null">
-                project_performance = #{projectPerformance},
+            <if test="nodeAttachment != null">
+                project_node_attachment = #{nodeAttachment},
             </if>
             <if test="projectManagerId != null">
                 project_manager_id = #{projectManagerId},
-            </if>
-            <if test="projectNodeDelayReason != null">
-                project_node_delay_reason = #{projectNodeDelayReason},
             </if>
             <if test="expirationTime != null">
                 expiration_time = #{expirationTime}
@@ -57,22 +54,22 @@
         WHERE id = #{id}
     </update>
 
-    <select id="getProjectPlanList" resultType="com.project.manager.pojo.BaseProjectPlan">
-        SELECT id as id,project_name as projectName,project_id projectId,project_code projectCode,project_node_finish projectNodeFinish,
-        project_performance projectPerformance,project_node_delay_reason projectNodeDelayReason,expiration_time expirationTime,
+    <select id="getProjectNodeList" resultType="com.project.manager.dto.BaseProjectNodeInfoDTO">
+        SELECT id as id,project_name as projectName,project_id projectId,project_node_finish projectNodeFinish,
+        (SELECT user_name FROM base_project_user as r WHERE r.id = project_manager_id) AS projectManagerName,project_node_attachment nodeAttachment,expiration_time expirationTime,
         project_node_name projectNodeName,create_time createTime
-        FROM base_project_plan
+        FROM base_project_node
         <where>
-            <if test="projectName != null">
-               and project_name = #{projectName},
+            <if test="s_projectName != null and s_projectName != ''">
+               and project_name = #{s_projectName}
             </if>
-            <if test="projectCode != null">
-               and project_code = #{projectCode},
+            <if test="s_expirationTime != null and s_expirationTime != '' ">
+                and expiration_time &lt;  #{s_expirationTime}
             </if>
         </where>
     </select>
 
-    <delete id="deleteProjectPlan">
-        delete from base_project_plan WHERE id = #{id}
+    <delete id="deleteProjectNode">
+        delete from base_project_node WHERE id = #{id}
     </delete>
 </mapper>

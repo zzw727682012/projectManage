@@ -35,7 +35,7 @@ CREATE TABLE `base_admin_role`  (
 -- ----------------------------
 -- Records of base_admin_role
 -- ----------------------------
-INSERT INTO `base_admin_role` VALUES (1, '系统管理员', '系统管理员', '1,9', '2018-11-21 15:54:07', '2018-11-21 15:54:07', 1);
-INSERT INTO `base_admin_role` VALUES (2, '普通管理员', '普通管理员', '9', '2018-11-21 15:11:44', '2018-12-03 19:09:57', 1);
+INSERT INTO `base_admin_role` VALUES (1, '系统管理员', '系统管理员', '1,9', date_format(now(), '%Y-%m-%d %H:%I:%S') , date_format(now(), '%Y-%m-%d %H:%I:%S'), 1);
+INSERT INTO `base_admin_role` VALUES (2, '普通管理员', '普通管理员', '9', date_format(now(), '%Y-%m-%d %H:%I:%S') , date_format(now(), '%Y-%m-%d %H:%I:%S'), 1);
 
 SET FOREIGN_KEY_CHECKS = 1;

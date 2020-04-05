@@ -3,7 +3,7 @@ package com.project.manager.service;
 
 import com.project.manager.dto.ProjectSearchDTO;
 import com.project.manager.pojo.BaseProjectInfo;
-import com.project.manager.pojo.BaseProjectPlan;
+import com.project.manager.pojo.BaseProjectNode;
 import com.project.manager.pojo.BaseProjectUser;
 import com.project.manager.response.PageDataResult;
 
@@ -21,7 +21,7 @@ public interface BaseProjectService {
 
     PageDataResult getProjectUserList(ProjectSearchDTO projectSearchDTO, Integer pageNum, Integer pageSize);
 
-    PageDataResult getProjectPlanList(ProjectSearchDTO projectSearchDTO, Integer pageNum, Integer pageSize);
+    PageDataResult getProjectNodeList(ProjectSearchDTO projectSearchDTO, Integer pageNum, Integer pageSize);
 
     BaseProjectInfo getProjectByProjectId(Integer id);
 
@@ -31,9 +31,13 @@ public interface BaseProjectService {
 
     Map<String, Object> delProjectUser(Integer id);
 
-    Map<String,Object> addProjectNode(BaseProjectPlan projectPlan);
+    Map<String,Object> addProjectNode(BaseProjectNode projectNode);
 
-    Map<String,Object> updateProjectNode(BaseProjectPlan projectPlan);
+    BaseProjectNode getProjectNode(Integer id);
+
+    Map<String, Object> delProjectNode(Integer id);
+
+    Map<String,Object> updateProjectNode(BaseProjectNode projectNode);
 
     List<BaseProjectInfo> getProjects();
 

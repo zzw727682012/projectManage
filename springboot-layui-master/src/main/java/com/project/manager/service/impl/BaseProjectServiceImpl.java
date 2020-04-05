@@ -2,16 +2,18 @@ package com.project.manager.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.project.manager.common.utils.DateRange;
 import com.project.manager.common.utils.DateUtils;
 import com.project.manager.common.utils.StringUtils;
 import com.project.manager.dao.BaseProjectInfoMapper;
-import com.project.manager.dao.BaseProjectPlanMapper;
+import com.project.manager.dao.BaseProjectNodeMapper;
 import com.project.manager.dao.BaseProjectUserMapper;
 import com.project.manager.dto.BasePersonnelInfoDTO;
 import com.project.manager.dto.BaseProjectInfoDTO;
+import com.project.manager.dto.BaseProjectNodeInfoDTO;
 import com.project.manager.dto.ProjectSearchDTO;
 import com.project.manager.pojo.BaseProjectInfo;
-import com.project.manager.pojo.BaseProjectPlan;
+import com.project.manager.pojo.BaseProjectNode;
 import com.project.manager.pojo.BaseProjectUser;
 import com.project.manager.response.PageDataResult;
 import com.project.manager.service.BaseProjectService;
@@ -36,13 +38,13 @@ public class BaseProjectServiceImpl implements BaseProjectService {
     private BaseProjectUserMapper baseProjectUserMapper;
 
     @Autowired
-    private BaseProjectPlanMapper baseProjectPlanMapper;
+    private BaseProjectNodeMapper baseProjectNodeMapper;
 
     @Override
     public Map<String, Object> addProject(BaseProjectInfo projectInfo) {
         Map<String,Object> data = new HashMap();
         try {
-            BaseProjectInfo old = baseProjectInfoMapper.getProjectByNameOrCode(null, projectInfo.getProjectCode());
+            BaseProjectInfo old = baseProjectInfoMapper.getProjectByProjectName(projectInfo.getProjectName(),null);
 
             if (old != null) {
                 data.put("code",0);
@@ -153,22 +155,22 @@ public class BaseProjectServiceImpl implements BaseProjectService {
     }
 
     @Override
-    public Map<String, Object> addProjectNode(BaseProjectPlan projectPlan) {
+    public Map<String, Object> addProjectNode(BaseProjectNode projectPlan) {
         Map<String,Object> data = new HashMap();
         try {
             BaseProjectInfo info = baseProjectInfoMapper.getProjectByProjectName(projectPlan.getProjectName(), null);
+            info.setNodeCount(info.getNodeCount() == null ? 1 : info.getNodeCount() + 1);
             projectPlan.setProjectManagerId(info.getProjectManagerId());
-            projectPlan.setProjectCode(info.getProjectCode());
             projectPlan.setProjectId(info.getId());
-            projectPlan.setCreateTime(DateUtils.getCurrentDate());
-            int result = baseProjectPlanMapper.insert(projectPlan);
+            projectPlan.setCreateTime(DateUtils.getNowDateString());
+            int result = baseProjectNodeMapper.insert(projectPlan);
             if(result == 0){
                 data.put("code",0);
                 data.put("msg","新增项目结点失败！");
                 logger.error("新增项目结点[新增]，结果=新增失败！");
                 return data;
             }
-
+            updateProject(info);
             data.put("code",1);
             data.put("msg","新增成功！");
             logger.info("新增项目结点[新增]，结果=新增成功！");
@@ -183,17 +185,49 @@ public class BaseProjectServiceImpl implements BaseProjectService {
     }
 
     @Override
-    public Map<String, Object> updateProjectNode(BaseProjectPlan projectPlan) {
+    public BaseProjectNode getProjectNode(Integer id) {
+        return baseProjectNodeMapper.getProjectNodeById(id);
+    }
+
+    @Override
+    public Map<String, Object> delProjectNode(Integer id) {
+        Map<String,Object> data = new HashMap();
+
+        try {
+            BaseProjectNode projectNode = getProjectNode(id);
+            BaseProjectInfo info = baseProjectInfoMapper.getProjectByProjectName(projectNode.getProjectName(), projectNode.getId());
+            int result = baseProjectNodeMapper.deleteProjectNode(id);
+            if(result == 0){
+                data.put("code",0);
+                data.put("msg","删除节点失败");
+                logger.error("删除节点失败");
+                return data;
+            }
+            info.setNodeCount(info.getNodeCount() == null ? 0 : info.getNodeCount() - 1);
+            updateProject(info);
+            data.put("code",1);
+            data.put("msg","删除节点成功");
+            logger.info("删除节点成功");
+        } catch (Exception e) {
+            data.put("code",0);
+            data.put("msg","删除节点失败");
+            logger.error("删除节点失败" + e.getMessage());
+            e.printStackTrace();
+        }
+        return data;
+    }
+
+    @Override
+    public Map<String, Object> updateProjectNode(BaseProjectNode projectNode) {
         Map<String,Object> data = new HashMap();
         try {
-            int result = baseProjectPlanMapper.updateProjectPlan(projectPlan);
+            int result = baseProjectNodeMapper.updateProjectNode(projectNode);
             if(result == 0){
                 data.put("code",0);
                 data.put("msg","更新项目结点失败！");
                 logger.error("更新项目结点[更新]，结果=新增失败！");
                 return data;
             }
-
             data.put("code",1);
             data.put("msg","更新成功！");
             logger.info("更新项目结点[更新]，结果=新增成功！");
@@ -242,14 +276,18 @@ public class BaseProjectServiceImpl implements BaseProjectService {
     }
 
     @Override
-    public PageDataResult getProjectPlanList(ProjectSearchDTO projectSearchDTO, Integer pageNum, Integer pageSize) {
+    public PageDataResult getProjectNodeList(ProjectSearchDTO projectSearchDTO, Integer pageNum, Integer pageSize) {
         PageDataResult pageDataResult = new PageDataResult();
-        List<BaseProjectPlan> projectPlans = baseProjectPlanMapper.getProjectPlanList(projectSearchDTO);
+        if (projectSearchDTO.getS_dateRange() != null) {
+            projectSearchDTO.setS_expirationTime(DateUtils.dateRange(DateRange.getDateRange(projectSearchDTO.getS_dateRange())));
+        }
+        logger.info(projectSearchDTO.toString());
+        List<BaseProjectNodeInfoDTO> projectPlans = baseProjectNodeMapper.getProjectNodeList(projectSearchDTO);
         logger.info(projectPlans.toString());
         PageHelper.startPage(pageNum, pageSize);
 
         if(projectPlans.size() != 0){
-            PageInfo<BaseProjectPlan> pageInfo = new PageInfo<>(projectPlans);
+            PageInfo<BaseProjectNodeInfoDTO> pageInfo = new PageInfo<BaseProjectNodeInfoDTO>(projectPlans);
             pageDataResult.setList(projectPlans);
             pageDataResult.setTotals((int) pageInfo.getTotal());
         }
@@ -260,6 +298,9 @@ public class BaseProjectServiceImpl implements BaseProjectService {
     @Override
     public PageDataResult getProjectList(ProjectSearchDTO projectSearchDTO, Integer pageNum, Integer pageSize) {
         PageDataResult pageDataResult = new PageDataResult();
+        if (projectSearchDTO.getS_dateRange() != null) {
+            projectSearchDTO.setS_expirationTime(DateUtils.dateRange(DateRange.getDateRange(projectSearchDTO.getS_dateRange())));
+        }
         List<BaseProjectInfoDTO> baseProjectInfoDTOList = baseProjectInfoMapper.getProjectList(projectSearchDTO);
 
         for (BaseProjectInfoDTO dto: baseProjectInfoDTOList) {

@@ -1,9 +1,8 @@
 <!DOCTYPE html>
-<html  xmlns:th="http://www.thymeleaf.org"
-       xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<html  xmlns:th="http://www.thymeleaf.org">
 <head th:include="layout :: htmlhead" th:with="title='项目管理'"></head>
 <script src="/js/dateUtils.js"></script>
-<script src="/js/project/scheduleManage.js"></script>
+<script src="/js/project/projectNodeManage.js"></script>
 <body class="layui-layout-body">
 <div class="layui-layout layui-layout-admin">
     <!--头-->
@@ -15,21 +14,31 @@
             <div class="layui-form-item">
                 <label class="layui-form-label">项目名称</label>
                 <div class="layui-input-inline">
-                    <input id="select_projectName" name="projectName" autocomplete="off" class="layui-input" type="text"/>
+                    <input id="select_projectName" name="s_projectName" autocomplete="off" class="layui-input" type="text"/>
                 </div>
-                <label class="layui-form-label">项目编号</label>
-                <div class="layui-input-inline">
-                    <input id="select_projectCode" name="projectCode" autocomplete="off" class="layui-input" type="text"/>
-                </div>
-                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
-                <button class="layui-btn"  lay-submit="" lay-filter="searchSubmit">查询</button>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label" >截止日期</label>
+                    <div class="layui-input-inline">
+                        <select name="s_dateRange" id="select_dateRange">
+                            <option value="0"></option>
+                                <option value="1">一周内</option>
+                                <option value="2">半月内</option>
+                                <option value="3">一月内</option>
+                        </select>
+                        </div>
+                        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                        <button class="layui-btn"  lay-submit="" lay-filter="searchSubmit">查询</button>
+                    </div>
+
             </div>
         </form>
 
         <!--<hr class="layui-bg-blue"/>-->
         <hr class="layui-bg-black"/>
 
-        <button class="layui-btn layui-btn-normal" onclick="addProjectNode()">新增项目结点</button>
+        <button class="layui-btn layui-btn-normal" onclick="addProjectNode()">新增项目节点</button>
 
 <!--        <div style="display:none;" id="currentUser"><shiro:principal property="id"></shiro:principal></div>-->
 
@@ -37,19 +46,17 @@
 
         <script type="text/html" id="optBar">
             <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
-            {{#  if(d.finish == '0'){ }}
             <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
-            {{#  } }}
         </script>
     </div>
 
 
     <!--添加或编辑用户-->
-    <div id="addProject" class="layer_self_wrap" style="width:500px;display:none;">
-        <form id="projectForm" class="layui-form layui-form-pane" method="post" action="" style="margin-top: 20px;">
+    <div id="addProjectNode" class="layer_self_wrap" style="width:500px;display:none;">
+        <form id="projectNodeForm" class="layui-form layui-form-pane" method="post" action="" style="margin-top: 20px;">
             <input id="pageNum" type="hidden" name="pageNum"/>
             <input id="id" type="hidden" name="id"/>
-            <input id="projectResearchers" name="projectResearchers" type="hidden"/>
+            <input id="nodeAttachment" name="nodeAttachment" type="hidden"/>
             <div class="layui-form-item">
                 <label class="layui-form-label">项目名称</label>
                 <div class="layui-input-inline">
@@ -58,49 +65,39 @@
                 </div>
             </div>
             <div class="layui-form-item">
-                <label class="layui-form-label">结点名称</label>
+                <label class="layui-form-label">节点名称</label>
                 <div class="layui-input-inline">
                     <input id="projectNodeName" name="projectNodeName" autocomplete="off" lay-verify="required" class="layui-input" type="text"/>
-                </div>
-            </div>
-            <div class="layui-form-item">
-                <label class="layui-form-label">是否完成</label>
-                <div class="layui-input-inline">
-                    <select name="projectNodeFinish" id="projectNodeFinish">
-                        <option value="0">&nbsp</option>
-                        <option value="1">是</option>
-                        <option value="2">否</option>
-                    </select>
-                </div>
-            </div>
-            <div class="layui-form-item layui-form-text">
-                <label class="layui-form-label">未完成原因</label>
-                <div class="layui-input-block">
-                    <textarea name="projectNodeDelayReason" id="projectNodeDelayReason" class="layui-textarea"></textarea>
-                </div>
-            </div>
-            <div class="layui-form-item">
-                <label class="layui-form-label">完成情况</label>
-                <div class="layui-input-inline">
-                    <select name="projectPerformance" id="projectPerformance">
-                        <option value="0">&nbsp</option>
-                        <option value="1">优良</option>
-                        <option value="2">及格</option>
-                        <option value="3">不及格</option>
-                    </select>
                 </div>
             </div>
 
             <div class="layui-form-item">
                 <label class="layui-form-label">截止日期</label>
                 <div class="layui-input-inline">
-                    <input name="expirationTime" id="expirationTime" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input" type="text"/>
+                    <input name="expirationTime" id="nodeExpirationTime" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input" type="text"/>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">节点附件</label>
+                <div class="layui-input-inline">
+                    <button type="button" class="layui-btn" id="uploadNodeAttachment" name="uploadNodeAttachment" onclick="uploadFile('uploadNodeAttachment')"><i class="layui-icon"></i>上传</button>
+                    <a id="download" href="" class="layui-inline site-down">下载</a>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">是否完成</label>
+                <div class="layui-input-inline">
+                    <select name="projectNodeFinish" id="nodeIfFinish">
+                        <option value="0">否</option>
+                        <option value="1">是</option>
+                    </select>
                 </div>
             </div>
             <div class="layui-form-item">
                 <div class="layui-input-block" style="margin-left: 10px;">
                     <button class="layui-btn"  lay-submit="" lay-filter="projectSubmit">提交</button>
                     <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                    <button type="button"  class="layui-btn layui-hide" id="upload" name="upload">上传</button>
                 </div>
             </div>
         </form>

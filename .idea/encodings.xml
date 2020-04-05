@@ -3,6 +3,9 @@
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Colin" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Colin/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Zzw" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Zzw/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/springboot-layui-master/src/main/java" charset="UTF-8" />
   </component>
 </project>

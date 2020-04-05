@@ -58,10 +58,10 @@
         if_finish = #{finish},
       </if>
       <if test="nodeCount != null">
-        node_count = #{nodeCount}
+        node_count = #{nodeCount},
       </if>
       <if test="finalReport != null">
-        final_report = #{finalReport}
+        final_report = #{finalReport},
       </if>
       <if test="technicalReport != null">
         technical_report = #{technicalReport}
@@ -88,26 +88,22 @@
   </select>
 
   <select id="getProjectList" resultType="com.project.manager.dto.BaseProjectInfoDTO">
-    SELECT p.id as id, p.project_name AS projectName ,p.project_code AS projectCode,
-    p.project_budget_amount AS projectBudgetAmount ,p.project_account_amount AS projectAccountAmount,
-    (SELECT user_name FROM base_project_user as r WHERE r.id = p.project_manager_id) AS projectManagerName,
+    SELECT p.id as id, p.project_name AS projectName , p.project_source AS projectSource ,p.project_budget_amount AS projectBudgetAmount ,p.project_account_amount AS projectAccountAmount,
+    (SELECT user_name FROM base_project_user as r WHERE r.id = p.project_manager_id) AS projectManagerName,p.node_count AS nodeCount,
     p.project_researchers AS projectResearchers ,p.start_time AS startTime, p.expiration_time AS expirationTime, p.if_finish as finish
     FROM base_project_info as p
     <where>
-      <if test="projectName != null and projectName != '' ">
-        and project_name LIKE '%' #{projectName} '%'
+      <if test="s_projectName != null and s_projectName != '' ">
+        and project_name =  #{s_projectName}
       </if>
-      <if test="startTime != null and startTime != '' ">
-        and create_time &gt;  #{startTime}
+      <if test="s_expirationTime != null and s_expirationTime != '' ">
+        and expiration_time &lt;  #{s_expirationTime}
       </if>
-      <if test="endTime != null and endTime != '' ">
-        and create_time &lt;  #{endTime}
+      <if test="s_projectManagerName != null and s_projectManagerName != '' ">
+        and project_manager_id = (SELECT id FROM base_project_user WHERE user_name=#{s_projectManagerName})
       </if>
-      <if test="projectManagerName != null and projectManagerName != '' ">
-        and project_manager_id = (SELECT id FROM base_project_user WHERE user_name=#{projectManagerName})
-      </if>
-      <if test="projectUserName != null and projectUserName != '' ">
-        and project_researchers like CONCAT('%', (SELECT id FROM base_project_user WHERE user_name=#{projectUserName}), '%')
+      <if test="s_projectUserName != null and s_projectUserName != '' ">
+        and project_researchers like CONCAT('%', (SELECT id FROM base_project_user WHERE user_name=#{s_projectUserName}), '%')
       </if>
     </where>
   </select>

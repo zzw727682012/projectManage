@@ -3,97 +3,64 @@ package com.project.manager.dto;
 
 public class ProjectSearchDTO {
 
-    private String projectName;
+    private String s_projectName;
 
-    private String projectCode;
+    private String s_projectManagerName;
 
-    private Double minAmount;
+    private String s_projectUserName;
 
-    private Double maxAmount;
+    private Integer s_dateRange;
 
-    private String projectManagerName;
+    private String s_expirationTime;
 
-    private String projectUserName;
-
-    private String startTime;
-
-    private String endTime;
-
-    public String getProjectName() {
-        return projectName;
+    public String getS_projectName() {
+        return s_projectName;
     }
 
-    public void setProjectName(String projectName) {
-        this.projectName = projectName;
+    public void setS_projectName(String s_projectName) {
+        this.s_projectName = s_projectName;
     }
 
-    public String getProjectCode() {
-        return projectCode;
+    public String getS_projectManagerName() {
+        return s_projectManagerName;
     }
 
-    public Double getMinAmount() {
-        return minAmount;
+    public void setS_projectManagerName(String s_projectManagerName) {
+        this.s_projectManagerName = s_projectManagerName;
     }
 
-    public void setMinAmount(Double minAmount) {
-        this.minAmount = minAmount;
+    public String getS_projectUserName() {
+        return s_projectUserName;
     }
 
-    public Double getMaxAmount() {
-        return maxAmount;
+    public void setS_projectUserName(String s_projectUserName) {
+        this.s_projectUserName = s_projectUserName;
     }
 
-    public void setMaxAmount(Double maxAmount) {
-        this.maxAmount = maxAmount;
+    public Integer getS_dateRange() {
+        return s_dateRange;
     }
 
-    public void setProjectCode(String projectCode) {
-        this.projectCode = projectCode;
+    public void setS_dateRange(Integer s_dateRange) {
+        this.s_dateRange = s_dateRange;
     }
 
-    public String getProjectManagerName() {
-        return projectManagerName;
+    public String getS_expirationTime() {
+        return s_expirationTime;
     }
 
-    public void setProjectManagerName(String projectManagerName) {
-        this.projectManagerName = projectManagerName;
-    }
-
-    public String getProjectUserName() {
-        return projectUserName;
-    }
-
-    public void setProjectUserName(String projectUserName) {
-        this.projectUserName = projectUserName;
-    }
-
-    public String getStartTime() {
-        return startTime;
-    }
-
-    public void setStartTime(String startTime) {
-        this.startTime = startTime;
-    }
-
-    public String getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(String endTime) {
-        this.endTime = endTime;
+    public void setS_expirationTime(String s_expirationTime) {
+        this.s_expirationTime = s_expirationTime;
     }
 
     @Override
     public String toString() {
         return "ProjectSearchDTO{" +
-                "projectName='" + projectName + '\'' +
-                ", projectCode='" + projectCode + '\'' +
-                ", minAmount=" + minAmount +
-                ", maxAmount=" + maxAmount +
-                ", projectManagerName='" + projectManagerName + '\'' +
-                ", projectUserName='" + projectUserName + '\'' +
-                ", startTime='" + startTime + '\'' +
-                ", endTime='" + endTime + '\'' +
+                "s_projectName='" + s_projectName + '\'' +
+                ", s_projectManagerName='" + s_projectManagerName + '\'' +
+                ", s_projectUserName='" + s_projectUserName + '\'' +
+                ", s_dateRange=" + s_dateRange +
+                ", s_expirationTime='" + s_expirationTime + '\'' +
                 '}';
     }
 }

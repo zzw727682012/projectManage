@@ -1,11 +1,14 @@
 package com.project.manager.controller.project;
 
 
+import com.project.manager.common.IStatusMessage;
+import com.project.manager.common.utils.StringUtils;
 import com.project.manager.dto.ProjectSearchDTO;
 import com.project.manager.pojo.BaseProjectInfo;
-import com.project.manager.pojo.BaseProjectPlan;
+import com.project.manager.pojo.BaseProjectNode;
 import com.project.manager.pojo.BaseProjectUser;
 import com.project.manager.response.PageDataResult;
+import com.project.manager.response.ResponseResult;
 import com.project.manager.service.BaseProjectService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,7 +23,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URLEncoder;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 
@@ -33,11 +35,14 @@ public class ProjectController {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    @Value("${projectAccessory}")
-    private String accessoryPath;
+    @Value("${finalReportPath}")
+    private String finalReportPath;
 
-    @Value("${userPhoto}")
-    private String photoPath;
+    @Value("${technicalReportPath}")
+    private String technicalReportPath;
+
+    @Value("${nodeAttachmentPath}")
+    private String nodeAttachmentPath;
 
     @Autowired
     private BaseProjectService baseProjectService;
@@ -54,10 +59,10 @@ public class ProjectController {
         return "/project/projectUserManage";
     }
 
-    @RequestMapping("scheduleManage")
+    @RequestMapping("projectNodeManage")
     public String scheduleManage() {
         logger.info("进入项目进度管理");
-        return "/project/scheduleManage";
+        return "/project/projectNodeManage";
     }
 
     @RequestMapping("amountManage")
@@ -94,13 +99,13 @@ public class ProjectController {
 
     @RequestMapping(value = "/addProjectNode", method = RequestMethod.POST)
     @ResponseBody
-    public Map<String,Object> addProjectNode(BaseProjectPlan projectPlan) {
-        logger.info("项目结点管理[新增或更新]！project:" + projectPlan);
+    public Map<String,Object> addProjectNode(BaseProjectNode projectNode) {
+        logger.info("项目结点管理[新增或更新]！project:" + projectNode);
         Map<String,Object> data = new HashMap();
-        if(projectPlan.getId() == null){
-            data = baseProjectService.addProjectNode(projectPlan);
+        if(projectNode.getId() == null){
+            data = baseProjectService.addProjectNode(projectNode);
         }else{
-            data = baseProjectService.updateProjectNode(projectPlan);
+            data = baseProjectService.updateProjectNode(projectNode);
         }
         return data;
     }
@@ -161,9 +166,9 @@ public class ProjectController {
         return pdr;
     }
 
-    @RequestMapping(value = "/getProjectPlanList", method = RequestMethod.POST)
+    @RequestMapping(value = "/getProjectNodeList", method = RequestMethod.POST)
     @ResponseBody
-    public PageDataResult getProjectPlanList(@RequestParam("pageNum") Integer pageNum,
+    public PageDataResult getProjectNodeList(@RequestParam("pageNum") Integer pageNum,
                                            @RequestParam("pageSize") Integer pageSize, ProjectSearchDTO projectSearchDTO) {
         logger.info("分页查询项目结点！搜索条件：project search：" + projectSearchDTO + ",pageNum:" + pageNum
                 + ",每页记录数量pageSize:" + pageSize);
@@ -176,7 +181,7 @@ public class ProjectController {
                 pageSize = 10;
             }
             // 获取用户列表
-            pdr = baseProjectService.getProjectPlanList(projectSearchDTO, pageNum ,pageSize);
+            pdr = baseProjectService.getProjectNodeList(projectSearchDTO, pageNum ,pageSize);
             logger.info("项目结点查询=pdr:" + pdr);
 
         } catch (Exception e) {
@@ -192,7 +197,6 @@ public class ProjectController {
         logger.info("删除项目！id:" + id);
         Map<String, Object> data = new HashMap<>();
         data = baseProjectService.delProject(id);
-
         return data;
     }
 
@@ -202,20 +206,37 @@ public class ProjectController {
         logger.info("删除项目！id:" + id);
         Map<String, Object> data = new HashMap<>();
         data = baseProjectService.delProjectUser(id);
-
         return data;
     }
 
-    @RequestMapping(value = "/uploadProjectAccessory", method = RequestMethod.POST)
+    @RequestMapping(value = "/delProjectNode", method = RequestMethod.POST)
     @ResponseBody
-    public Map<String, Object> uploadProjectAccessory(@RequestParam("file") MultipartFile file, HttpServletRequest request) {
+    public Map<String, Object> delProjectNode(@RequestParam("id") Integer id) {
+        logger.info("删除项目！id:" + id);
         Map<String, Object> data = new HashMap<>();
+        data = baseProjectService.delProjectNode(id);
+        return data;
+    }
+
+    @RequestMapping(value = "/uploadFile", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseResult uploadFile(@RequestParam("file") MultipartFile file, HttpServletRequest request) {
+        ResponseResult result = new ResponseResult();
         try {
             String name = file.getOriginalFilename();
+            String type = request.getParameter("type");
+            String filePath = null;
+            if (type.equals("uploadTechnicalReport")) {
+                filePath = technicalReportPath + name;
+            } else if (type.equals("uploadFinalReport")) {
+                filePath = finalReportPath + name;
+            } else if (type.equals("uploadNodeAttachment")) {
+                filePath = nodeAttachmentPath + name;
+            } else {
+                result.setStatusMessage(IStatusMessage.SystemStatus.PARAM_ERROR);
+            }
+            logger.info("附件路径:" + filePath);
 
-            logger.info("附件路径:" + accessoryPath + name);
-
-            String filePath = accessoryPath + name;
             filePath = filePath.replace("\\", "/");
             File tempFile = new File(filePath);
             if (!tempFile.getParentFile().exists()) {
@@ -226,39 +247,69 @@ public class ProjectController {
             }
             tempFile.createNewFile();
             file.transferTo(tempFile);
-            data.put("code", 1);
-            data.put("msg", "上传成功");
-            data.put("path", name);
+            result.setMessage("上传成功");
+            result.setObj(name);
         } catch (Exception e) {
             e.printStackTrace();
-            data.put("code", 0);
-            data.put("msg", "上传失败");
+            result.setCode("404");
+            result.setMessage("上传失败：" + e.getMessage());
         }
-        return data;
+        return result;
     }
 
-
-    @RequestMapping(value = "/downloadProjectAccessory", method = RequestMethod.GET)
+    @RequestMapping(value = "/downloadFile", method = RequestMethod.GET)
     @ResponseBody
-    public void downloadProjectAccessory(HttpServletRequest request, HttpServletResponse response) {
+    public void downloadFile(HttpServletRequest request, HttpServletResponse response) {
         ServletOutputStream outputStream = null;
         FileInputStream inputStream = null;
         try {
             logger.info("请求地址：" + request.getRequestURI());
-            String id = request.getParameter("projectId");
-            if (id == null || "".equals(id)) {
-                logger.error("下载失败附件文件不存在");
+            String id = request.getParameter("id");
+            String type = request.getParameter("type");
+
+            boolean fileExist = true;
+            if (StringUtils.isNull(id) || StringUtils.isNull(type)) {
+                logger.error("下载失败,附件文件不存在");
+                fileExist = false;
+            }
+            String fileName = null;
+            String path = null;
+            if (type.equals("nodeAttachment")) {
+                BaseProjectNode projectNode = baseProjectService.getProjectNode(Integer.valueOf(id));
+                fileName = projectNode.getNodeAttachment();
+                path = nodeAttachmentPath;
+            } else if (type.equals("finalReport")) {
+                BaseProjectInfo info = baseProjectService.getProjectByProjectId(Integer.valueOf(id));
+                fileName = info.getFinalReport();
+                path = finalReportPath;
+            } else if (type.equals("technicalReport")) {
+                BaseProjectInfo info = baseProjectService.getProjectByProjectId(Integer.valueOf(id));
+                fileName = info.getTechnicalReport();
+                path = technicalReportPath;
+            } else {
+                logger.error("下载失败,下在类型不存在");
+                fileExist = false;
+            }
+
+            if (StringUtils.isNull(fileName) || !fileExist) {
+                logger.error("下载失败,文件不存在");
+                response.setContentType("text/html;charset=UTF-8");
+                response.setCharacterEncoding("UTF-8");
+                PrintWriter writer = response.getWriter();
+                writer.write("<script type=\"text/javascript\">alert('file not found');window.history.back(-1);</script>");
+                writer.flush();
+                writer.close();
                 return;
             }
-            BaseProjectInfo info = baseProjectService.getProjectByProjectId(Integer.valueOf(id));
             response.setContentType("application/octet-stream");
-            response.setHeader("Content-Disposition","attachment;filename=" + URLEncoder.encode(info.getProjectAccessory(), "UTF-8"));
+            response.setHeader("Content-Disposition","attachment;filename=" + URLEncoder.encode(fileName, "UTF-8"));
             response.setCharacterEncoding("UTF-8");
             response.setHeader("Pragma", "No-cache");
             response.setHeader("Cache-Control", "No-cache");
 
-            String fileName = accessoryPath + info.getProjectAccessory();
-            inputStream = new FileInputStream(fileName);
+            String filePath = path + fileName;
+
+            inputStream = new FileInputStream(filePath);
             outputStream = response.getOutputStream();
             byte[] buffer = new byte[1024];
             int len = 0;
@@ -288,52 +339,6 @@ public class ProjectController {
         }
     }
 
-    @RequestMapping(value = "/uploadPhoto", method = {RequestMethod.POST})
-    @ResponseBody
-    public Map<String, Object> uploadPhoto(@RequestParam(value="file",required=false) MultipartFile file, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        Map<String,Object> map2=new HashMap<>();
-        Map<String,Object> map=new HashMap<>();
-        String prefix="";
-        String dateStr="";
-        String uploadDir="uploadDir";//这个文件夹是创建在:helloworld/target/helloworld/statics/uploadDir,以及helloworld/statics/uploadDir处
-        //保存上传
-        OutputStream out = null;
-        InputStream fileInput=null;
-        try{
-            if(file!=null){
-                String originalName = file.getOriginalFilename();
-                prefix=originalName.substring(originalName.lastIndexOf(".")+1);
-                SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmss");
-                dateStr = format.format(new Date());
-                String filepath = request.getServletContext().getRealPath("/statics/"+ uploadDir+"/" + dateStr + "." + prefix) ;
-                filepath = filepath.replace("/", "\\");//java中路径转码
-                File files=new File(filepath);
-                //打印查看上传路径
-                System.out.println(filepath);
-                if(!files.getParentFile().exists()){
-                    files.getParentFile().mkdirs();
-                }
-                file.transferTo(files);
-            }
-        }catch (Exception e){
-            e.printStackTrace();
-        }finally{
-            try {
-                if(out!=null){
-                    out.close();
-                }
-                if(fileInput!=null){
-                    fileInput.close();
-                }
-            } catch (IOException e) {
-            }
-        }
-        map.put("code",0);
-        map.put("msg","");
-        map.put("data",map2);
-        map2.put("src","../../../statics/"+uploadDir +"/"+ dateStr + "." + prefix);
-        return map;
-    }
 
     @GetMapping("/getProjectUsers")
     @ResponseBody

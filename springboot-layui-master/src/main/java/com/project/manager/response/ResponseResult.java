@@ -26,6 +26,11 @@ public class ResponseResult implements Serializable{
 
     }
 
+    public void setStatusMessage(IStatusMessage statusMessage){
+        this.code = statusMessage.getCode();
+        this.message = statusMessage.getMessage();
+
+    }
     public String getCode() {
         return code;
     }

@@ -24,28 +24,22 @@ $(function() {
             },
             cols: [[
                 {type:'numbers'}
-
                 ,{field:'userName', title:'姓名',align:'center'}
                 ,{field:'userSex', title:'性别',align:'center'}
                 ,{field:'userBirthday', title: '出生日期',align:'center'}
                 ,{field:'userPoliticsStatus', title: '政治面貌',align:'center'}
                 ,{field:'userJoinTime', title:'入党(团)日期',align:'center'}
                 ,{field:'userGraduateInstitutions', title: '毕业院校',align:'center'}
-/*                ,{field:'userPhoto', title: '照片',align:'center'}
-                ,{field:'userFatherName', title: '父亲姓名',align:'center'}
-                ,{field:'userFatherAge', title: '父亲年龄',align:'center'}
-                ,{field:'userFatherJob', title:'父亲工作单位',align:'center'}
-                ,{field:'userMotherName', title: '母亲姓名',align:'center'}
-                ,{field:'userMotherAge', title: '母亲工作年龄',align:'center'}
-                ,{field:'userMotherJob', title: '母亲工作单位',align:'center'}
-                ,{field:'userHomeAddress', title: '家庭住址',align:'center'}*/
+                ,{field:'userOrganization', title:'工作单位',align:'center'}
+                ,{field:'userTeachingOffice', title: '教研室',align:'center'}
+                ,{field:'userHomeAddress', title: '家庭住址',align:'center'}
                 ,{field:'createTime', title:'创建时间',align:'center'}
                 ,{title:'操作',align:'center', toolbar:'#optBar'}
             ]],
             done: function(res, curr, count){
                 //如果是异步请求数据方式，res即为你接口返回的信息。
                 //如果是直接赋值的方式，res即为：{data: [], count: 99} data为当前页数据、count为数据总长度
-                //console.log(res);
+                console.log(res);
                 //得到当前页码
                 console.log(curr);
                 //得到数据总量
@@ -138,15 +132,9 @@ function openProjectUser(data,title){
         $("#userPoliticsStatus").val(data.userPoliticsStatus);
         $("#userJoinTime").val(data.userJoinTime);
         $("#userGraduateInstitutions").val(data.userGraduateInstitutions);
-        $("#userPhoto").val(data.userPhoto);
-        $("#userFatherName").val(data.userFatherName);
-        $("#userFatherAge").val(data.userFatherAge);
-        $("#userFatherJob").val(data.userFatherJob);
-        $("#userMotherName").val(data.userMotherName);
-        $("#userMotherAge").val(data.userMotherAge);
-        $("#userMotherJob").val(data.userMotherJob);
+        $("#userOrganization").val(data.userOrganization);
+        $("#userTeachingOffice").val(data.userTeachingOffice);
         $("#userHomeAddress").val(data.userHomeAddress);
-        $('#demo1').attr('src', data.userPhoto); //图片链接（base64）
 
     }
 
@@ -245,16 +233,8 @@ function cleanProject(){
     $("#userPoliticsStatus").val("");
     $("#userJoinTime").val("");
     $("#userGraduateInstitutions").val("");
-    $("#userPhoto").val("");
-    $("#userFatherName").val("");
-    $("#userFatherAge").val("");
-    $("#userFatherJob").val("");
-    $("#userMotherName").val("");
-    $("#userMotherAge").val("");
-    $("#userMotherJob").val("");
+    $("#userOrganization").val("");
+    $("#userTeachingOffice").val("");
     $("#userHomeAddress").val("");
-    var demoText = $('#demoText');
-    demoText.html.val("");
-    $('#demo1').attr('src', "");
 }
 

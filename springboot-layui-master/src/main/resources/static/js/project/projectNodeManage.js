@@ -9,7 +9,7 @@ $(function() {
 
         tableIns=table.render({
             elem: '#projectNodeList',
-            url:'/project/getProjectPlanList',
+            url:'/project/getProjectNodeList',
             method: 'post', //默认：get请求
             cellMinWidth: 80,
             page: true,
@@ -25,38 +25,25 @@ $(function() {
             },
             cols: [[
                 {type:'numbers'}
-
                 ,{field:'projectName', title:'项目名称',align:'center'}
-                ,{field:'projectCode', title:'项目编号',align:'center'}
                 ,{field:'projectNodeName', title: '项目结点名称',align:'center'}
+                ,{field:'projectManagerName', title: '项目主导人',align:'center'}
                 ,{field:'createTime', title:'创建时间',align:'center'}
                 ,{field:'expirationTime', title: '截止日期',align:'center'}
-                ,{field:'projectNodeFinish', title: '是否完成',align:'center'}
-                ,{field:'projectPerformance', title: '完成情况',align:'center'}
-                ,{field:'projectNodeDelayReason', title: '未完成原因',align:'center'}
-
+                ,{field:'projectNodeFinish', title: '节点是否完成',align:'center'}
                 ,{title:'操作',align:'center', toolbar:'#optBar'}
             ]],
             done: function(res, curr, count){
                 //如果是异步请求数据方式，res即为你接口返回的信息。
                 //如果是直接赋值的方式，res即为：{data: [], count: 99} data为当前页数据、count为数据总长度
-                //console.log(res);
+                console.log(res);
                 //得到当前页码
                 console.log(curr);
                $("[data-field='projectNodeFinish']").children().each(function(){
                     if($(this).text()=='1'){
                         $(this).text("是")
-                    }else if($(this).text()=='2'){
+                    }else if($(this).text()=='0'){
                         $(this).text("否")
-                    }
-                });
-                $("[data-field='projectPerformance']").children().each(function(){
-                    if($(this).text()=='1'){
-                        $(this).text("优良")
-                    }else if($(this).text()=='2'){
-                        $(this).text("及格")
-                    }else if($(this).text()=='3'){
-                        $(this).text("不及格")
                     }
                 });
                 //得到数据总量
@@ -68,10 +55,26 @@ $(function() {
         //监听工具条
         table.on('tool(projectNodeTable)', function(obj){
             var data = obj.data;
-            if(obj.event === 'edit'){
+            if(obj.event === 'del'){
+                //删除
+                delProjectNode(data,data.id,data.projectNodeName);
+            } else if(obj.event === 'edit'){
                 //编辑
-                openProject(data,"编辑");
+                openProjectNode(data,"编辑");
             }
+        });
+
+        //搜索框
+        layui.use(['form','laydate'], function(){
+            var form = layui.form ,layer = layui.layer
+                ,laydate = layui.laydate;
+            //TODO 数据校验
+            //监听搜索框
+            form.on('submit(searchSubmit)', function(data){
+                //重新加载table
+                load(data);
+                return false;
+            });
         });
 
         //监听提交
@@ -83,26 +86,48 @@ $(function() {
 
     });
 
+    //文件上传
+    layui.use('upload', function(){
+        var $ = layui.jquery
+            ,upload = layui.upload;
+        //指定允许上传的文件类型
+        uploadInst = upload.render({
+            elem: '#upload'
+            ,url: 'uploadFile'
+            ,accept: 'file' //普通文件
 
-    //搜索框
-    layui.use(['form','laydate'], function(){
-        var form = layui.form ,layer = layui.layer
-            ,laydate = layui.laydate;
-        //TODO 数据校验
-        //监听搜索框
-        form.on('submit(searchSubmit)', function(data){
-            //重新加载table
-            load(data);
-            return false;
+            ,done: function(res){
+
+            }
         });
     });
 });
+
+function uploadFile(type) {
+    //重载该实例，支持重载全部基础参数
+    uploadInst.reload({
+        data: {type: type}
+        ,done: function(res){
+            if (res.code == "200") {
+                console.log(res);
+                layer.alert(res.message + " 请注意提交！");
+                $("#nodeAttachment").val(res.obj);
+            } else {
+                layer.alert(res.message);
+            }
+        }
+        ,error: function(){
+            layer.alert("请求异常");
+        }
+    });
+    $("#upload").click();
+}
 
 //提交表单
 function formSubmit(obj){
     $.ajax({
         type: "POST",
-        data: $("#projectForm").serialize(),
+        data: $("#projectNodeForm").serialize(),
         url: "/project/addProjectNode",
         success: function (data) {
             if (data.code == 1) {
@@ -125,26 +150,32 @@ function formSubmit(obj){
 }
 
 function addProjectNode(){
-    openProject(null,"新增项目结点");
+    openProjectNode(null,"新增项目结点");
 }
-function openProject(data,title){
-    var form = layui.form ,layer = layui.layer
-    ,laydate = layui.laydate;
+function openProjectNode(data,title){
+    var form = layui.form ,layer = layui.layer;
     //日期
-    laydate.render({
-        elem: '#expirationTime'
+    layui.use('laydate', function(){
+        var laydate = layui.laydate;
+
+        //执行一个laydate实例
+        laydate.render({
+            elem: '#nodeExpirationTime' //指定元素
+        });
     });
+
     var projectName = null;
     if(data==null || data==""){
         $("#id").val("");
+        $("#download").attr("href","/project/downloadFile?id="+""+ "&type=" + "");
     }else{
         console.log(data);
         $("#id").val(data.id);
         $("#projectNodeFinish").val(data.projectNodeFinish);
-        $("#projectPerformance").val(data.projectPerformance);
-        $("#projectNodeDelayReason").val(data.projectNodeDelayReason);
-        $("#expirationTime").val(data.expirationTime);
-
+        $("#projectNodeName").val(data.projectNodeName);
+        $("#nodeAttachment").val(data.nodeAttachment);
+        $("#nodeExpirationTime").val(data.expirationTime);
+        $("#download").attr("href","/project/downloadFile?id="+data.id+ "&type=" + "nodeAttachment");
         projectName = data.projectName;
     }
     var pageNum = $(".layui-laypage-skip").find("input").val();
@@ -180,10 +211,29 @@ function openProject(data,title){
         resize :false,
         shadeClose: true,
         area: ['550px'],
-        content:$('#addProject'),
+        content:$('#addProjectNode'),
         end:function(){
             cleanProject();
         }
+    });
+}
+function delProjectNode(obj, id, name) {
+
+    layer.confirm('您确定要删除' + name + '项目节点吗？', {
+        btn: ['确认', '返回'] //按钮
+    }, function () {
+        $.post("/project/delProjectNode", {"id": id}, function (data) {
+            if (data.code == 1) {
+                layer.alert(data.msg, function () {
+                    layer.closeAll();
+                    load(obj);
+                });
+            } else {
+                layer.alert(data.msg);
+            }
+        });
+    }, function () {
+        layer.closeAll();
     });
 }
 
@@ -199,10 +249,9 @@ function load(obj){
 
 function cleanProject(){
     $("#projectName").html("");
-    $("#projectCode").val("");
     $("#projectNodeFinish").val("");
-    $("#projectNodeDelayReason").val("");
-    $("#projectPerformance").val("");
-    $("#expirationTime").val("");
+    $("#projectNodeName").val("");
+    $("#nodeAttachment").val("");
+    $("#nodeExpirationTime").val("");
 }
 

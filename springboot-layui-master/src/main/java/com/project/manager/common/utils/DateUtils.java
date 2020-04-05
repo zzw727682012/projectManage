@@ -108,6 +108,18 @@ public class DateUtils {
     }
 
     /**
+     * 增加时间单位：月
+     * @param month
+     * @return
+     */
+    public static Date addMonth(int month) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(new Date());
+        cal.add(Calendar.MONTH, month);
+        return cal.getTime();
+    }
+
+    /**
      * 增加时间单位：天
      * @param date
      * @param day
@@ -130,7 +142,24 @@ public class DateUtils {
         return addDay(date, -day);
     }
 
+    /**
+     * 返回日期范围，比如7天内，一个月内
+     * @param dateRange
+     * @return
+     */
+    public static String dateRange(DateRange dateRange) {
+        SimpleDateFormat sdf = new SimpleDateFormat( "yyyy-MM-dd");
+        if (dateRange == DateRange.WEEK) {
+            return sdf.format(addDay(7));
+        } else if (dateRange == DateRange.HALF_A_MONTH) {
+            return sdf.format(addDay(15));
+        } else if (dateRange == DateRange.MONTH) {
+            return sdf.format(addMonth(1));
+        }
+        return null;
+    }
+
     public static void main(String[] args) {
-        System.out.println(getCurrentAddDay(2));
+        System.out.println(StringUtils.isNull(""));
     }
 }

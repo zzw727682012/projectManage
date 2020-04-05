@@ -15,6 +15,13 @@ spring:
       max-active: 20
       test-on-borrow: true
       driver-class-name: com.mysql.jdbc.Driver
+
+  servlet:
+    multipart:
+      #控制单个上传文件最大size
+      max-file-size: 50MB
+      #控制单个请求最大size
+      max-request-size: 1000MB
 #  thymeleaf:
 #      cache: false
 #      mode: HTML5
@@ -26,9 +33,12 @@ mybatis:
 
 #设置静态资源路径，多个以逗号分隔
 spring.resources.static-locations: classpath:static/,file:static/
-
-projectAccessory: D:\springboot\projectAccessory\
-userPhoto: D:\springboot\userPhoto\
+#总结报告目录
+finalReportPath: D:\springboot\finalReportPath\
+#技术报告目录
+technicalReportPath: D:\springboot\technicalReportPath\
+#节点附件目录
+nodeAttachmentPath: D:\springboot\nodeAttachmentPath\
 
 
 logging:

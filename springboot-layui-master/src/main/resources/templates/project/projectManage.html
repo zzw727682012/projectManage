@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html  xmlns:th="http://www.thymeleaf.org"
-       xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<html  xmlns:th="http://www.thymeleaf.org">
 <link rel="stylesheet" type="text/css" href="/css/formSelects-v4.css"/>
 <head th:include="layout :: htmlhead" th:with="title='项目管理'"></head>
 <script src="/js/dateUtils.js"></script>
@@ -12,26 +11,26 @@
 
     <div class="layui-body" style="margin: 1%">
 
-        <form id="userSearch" class="layui-form layui-form-pane" method="post" action="" style="margin-top: 20px;">
+        <form id="projectSearch" class="layui-form layui-form-pane" method="post" action="" style="margin-top: 20px;">
             <div class="layui-form-item">
                 <label class="layui-form-label">项目名称</label>
                 <div class="layui-input-inline">
-                    <input id="select_projectName" name="projectName" autocomplete="off" class="layui-input" type="text"/>
+                    <input id="select_projectName" name="s_projectName" autocomplete="off" class="layui-input" type="text"/>
                 </div>
                 <label class="layui-form-label">项目主导人</label>
                 <div class="layui-input-inline">
-                    <input id="select_projectManagerName" name="projectManagerName" autocomplete="off" class="layui-input" type="text"/>
+                    <input id="select_projectManagerName" name="s_projectManagerName" autocomplete="off" class="layui-input" type="text"/>
                 </div>
                 <label class="layui-form-label">项目参研人</label>
                 <div class="layui-input-inline">
-                    <input id="select_projectUserName" name="projectUserName" autocomplete="off" class="layui-input" type="text"/>
+                    <input id="select_projectUserName" name="s_projectUserName" autocomplete="off" class="layui-input" type="text"/>
                 </div>
             </div>
             <div class="layui-form-item">
                 <div class="layui-inline">
                     <label class="layui-form-label">截止日期</label>
                     <div class="layui-input-inline">
-                        <select name="expirationTime" id="select_expirationTime">
+                        <select name="s_dateRange" id="select_dateRange">
                             <option value="0"></option>
                             <option value="1">一周内</option>
                             <option value="2">半月内</option>
@@ -66,7 +65,8 @@
         <form id="projectForm" class="layui-form layui-form-pane" method="post" action="" style="margin-top: 20px;">
             <input id="pageNum" type="hidden" name="pageNum"/>
             <input id="id" type="hidden" name="id"/>
-            <input id="projectAccessory" name="projectAccessory" type="hidden"/>
+            <input id="technicalReport" name="technicalReport" type="hidden"/>
+            <input id="finalReport" name="finalReport" type="hidden"/>
             <div class="layui-form-item">
                 <label class="layui-form-label">项目名称</label>
                 <div class="layui-input-inline">
@@ -76,7 +76,7 @@
             <div class="layui-form-item">
                 <label class="layui-form-label">项目来源</label>
                 <div class="layui-input-inline">
-                    <input id="projectSource" name="projectSource" autocomplete="off" lay-verify="required" class="layui-input" type="text"/>
+                    <input id="projectSource" name="projectSource" autocomplete="off" class="layui-input" type="text"/>
                 </div>
             </div>
             <div class="layui-form-item">
@@ -122,20 +122,23 @@
             <div class="layui-form-item">
                 <label class="layui-form-label">是否完成</label>
                 <div class="layui-input-inline">
-                    <input name="finish" id="finish" autocomplete="off" class="layui-input" type="text"/>
+                    <select name="finish" id="finish">
+                        <option value="0">否</option>
+                        <option value="1">是</option>
+                    </select>
                 </div>
             </div>
             <div class="layui-form-item">
                 <label class="layui-form-label">技术报告</label>
                 <div class="layui-input-inline">
-                    <button type="button" class="layui-btn" id="uploadTechnicalReport" name="uploadTechnicalReport"><i class="layui-icon"></i>上传</button>
+                    <button type="button" class="layui-btn" id="uploadTechnicalReport" name="uploadTechnicalReport" onclick="uploadFile('uploadTechnicalReport')"><i class="layui-icon"></i>上传</button>
                     <a id="download1" href="" class="layui-inline site-down">下载</a>
                 </div>
             </div>
             <div class="layui-form-item">
                 <label class="layui-form-label">总结报告</label>
                 <div class="layui-input-inline">
-                    <button type="button" class="layui-btn" id="uploadFinalReport" name="uploadProjectAccessory"><i class="layui-icon"></i>上传</button>
+                    <button type="button" class="layui-btn" id="uploadFinalReport" name="uploadFinalReport"  onclick="uploadFile('uploadFinalReport')"><i class="layui-icon"></i>上传</button>
                     <a id="download2" href="" class="layui-inline site-down">下载</a>
                 </div>
             </div>
@@ -143,6 +146,7 @@
                 <div class="layui-input-block" style="margin-left: 10px;">
                     <button class="layui-btn"  lay-submit="" lay-filter="projectSubmit">提交</button>
                     <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                    <button type="button"  class="layui-btn layui-hide" id="upload" name="upload">上传</button>
                 </div>
             </div>
         </form>

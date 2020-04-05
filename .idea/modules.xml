@@ -6,6 +6,7 @@
       <module fileurl="file://$PROJECT_DIR$/KafkaDemo/Demo.iml" filepath="$PROJECT_DIR$/KafkaDemo/Demo.iml" />
       <module fileurl="file://$PROJECT_DIR$/Misunderstood.iml" filepath="$PROJECT_DIR$/Misunderstood.iml" />
       <module fileurl="file://$PROJECT_DIR$/Zzw/Zzw.iml" filepath="$PROJECT_DIR$/Zzw/Zzw.iml" />
+      <module fileurl="file://$PROJECT_DIR$/springboot-layui-master/manager.iml" filepath="$PROJECT_DIR$/springboot-layui-master/manager.iml" />
     </modules>
   </component>
 </project>

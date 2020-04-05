@@ -36,15 +36,13 @@ CREATE TABLE `base_admin_permission`  (
 -- ----------------------------
 -- Records of base_admin_permission
 -- ----------------------------
-INSERT INTO `base_admin_permission` VALUES (1, '系统管理', 0, '系统管理', '', '2018-11-30 10:27:34', '2018-11-30 10:27:34', 1);
-INSERT INTO `base_admin_permission` VALUES (2, '账号管理', 1, '账号管理', '/user/userManage', '2018-11-30 11:44:41', '2018-11-30 11:56:34', 1);
-INSERT INTO `base_admin_permission` VALUES (3, '角色管理', 1, '角色管理', '/role/roleManage', '2018-11-30 11:45:27', '2018-11-30 11:45:27', 1);
-INSERT INTO `base_admin_permission` VALUES (7, '权限管理', 1, '权限管理', '/permission/permissionManage', '2018-11-30 11:48:35', '2018-11-30 15:13:38', 1);
-INSERT INTO `base_admin_permission` VALUES (9, '基本设置', 0, '基本设置', '', '2018-11-30 12:10:32', '2018-11-30 12:10:32', 1);
-INSERT INTO `base_admin_permission` VALUES (10, '服务类目管理', 9, '服务类目管理', '/goodsCategory/goodsCategoryManage', '2018-12-04 11:47:07', '2018-12-04 11:47:07', 1);
-INSERT INTO `base_admin_permission` VALUES (11, '服务类型管理', 9, '服务类型管理', '/serviceType/serviceTypeManage', '2018-12-04 11:47:59', '2018-12-04 11:47:59', 1);
-INSERT INTO `base_admin_permission` VALUES (12, '支付方式', 9, '支付方式', '/payplatform/payplatManage', '2018-12-04 11:48:44', '2018-12-04 11:48:44', 1);
-INSERT INTO `base_admin_permission` VALUES (13, '银行管理', 9, '银行管理', '/bank/bankManage', '2018-12-04 11:49:13', '2018-12-04 11:49:13', 1);
-INSERT INTO `base_admin_permission` VALUES (14, '省市区管理', 9, '省市区管理', '/position/positionManage', '2018-12-04 11:49:36', '2018-12-04 11:50:02', 1);
+INSERT INTO `base_admin_permission` VALUES (1, '系统管理', 0, '系统管理', '', date_format(now(), '%Y-%m-%d %H:%I:%S') , date_format(now(), '%Y-%m-%d %H:%I:%S'), 1);
+INSERT INTO `base_admin_permission` VALUES (2, '账号管理', 1, '账号管理', '/user/userManage', date_format(now(), '%Y-%m-%d %H:%I:%S') , date_format(now(), '%Y-%m-%d %H:%I:%S'), 1);
+INSERT INTO `base_admin_permission` VALUES (3, '角色管理', 1, '角色管理', '/role/roleManage', date_format(now(), '%Y-%m-%d %H:%I:%S') , date_format(now(), '%Y-%m-%d %H:%I:%S'),1);
+INSERT INTO `base_admin_permission` VALUES (7, '权限管理', 1, '权限管理', '/permission/permissionManage', date_format(now(), '%Y-%m-%d %H:%I:%S') , date_format(now(), '%Y-%m-%d %H:%I:%S'), 1);
+INSERT INTO `base_admin_permission` VALUES (9, '项目管理', 0, '项目管理', '', date_format(now(), '%Y-%m-%d %H:%I:%S') , date_format(now(), '%Y-%m-%d %H:%I:%S'), 1);
+INSERT INTO `base_admin_permission` VALUES (10, '项目基本信息', 9, '项目基本信息', '/project/projectManage',  date_format(now(), '%Y-%m-%d %H:%I:%S') , date_format(now(), '%Y-%m-%d %H:%I:%S'), 1);
+INSERT INTO `base_admin_permission` VALUES (11, '项目节点信息', 9, '项目节点信息', '/project/projectNodeManage', date_format(now(), '%Y-%m-%d %H:%I:%S') , date_format(now(), '%Y-%m-%d %H:%I:%S'), 1);
+INSERT INTO `base_admin_permission` VALUES (12, '项目人员信息', 9, '项目人员信息', '/project/projectUserManage', date_format(now(), '%Y-%m-%d %H:%I:%S') , date_format(now(), '%Y-%m-%d %H:%I:%S'), 1);
 
 SET FOREIGN_KEY_CHECKS = 1;

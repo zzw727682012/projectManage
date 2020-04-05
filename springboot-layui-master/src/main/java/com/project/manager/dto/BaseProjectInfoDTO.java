@@ -6,6 +6,8 @@ public class BaseProjectInfoDTO {
 
     private String projectName;
 
+    private String projectSource;
+
     private Double projectBudgetAmount;
 
     private Double projectAccountAmount;
@@ -23,6 +25,14 @@ public class BaseProjectInfoDTO {
     private String expirationTime;
 
     private String finish;
+
+    public String getProjectSource() {
+        return projectSource;
+    }
+
+    public void setProjectSource(String projectSource) {
+        this.projectSource = projectSource;
+    }
 
     public String getProjectResearchersName() {
         return projectResearchersName;
@@ -117,6 +127,7 @@ public class BaseProjectInfoDTO {
         return "BaseProjectInfoDTO{" +
                 "id=" + id +
                 ", projectName='" + projectName + '\'' +
+                ", projectSource='" + projectSource + '\'' +
                 ", projectBudgetAmount=" + projectBudgetAmount +
                 ", projectAccountAmount=" + projectAccountAmount +
                 ", projectManagerName='" + projectManagerName + '\'' +
