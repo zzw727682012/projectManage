@@ -14,7 +14,7 @@
             <div class="layui-form-item">
                 <label class="layui-form-label">姓名</label>
                 <div class="layui-input-inline">
-                    <input id="select_projectUserName" name="projectUserName" autocomplete="off" class="layui-input" type="text"/>
+                    <input id="select_projectUserName" name="s_projectUserName" autocomplete="off" class="layui-input" type="text"/>
                 </div>
                 <button type="reset" class="layui-btn layui-btn-primary">重置</button>
                 <button class="layui-btn"  lay-submit="" lay-filter="searchSubmit">查询</button>
@@ -30,7 +30,7 @@
         <table id="projectUserList" lay-filter="projectUserTable"></table>
 
         <script type="text/html" id="optBar">
-            <a class="layui-btn layui-btn-xs" lay-event="edit">详情</a>
+            <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
             <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
         </script>
     </div>
