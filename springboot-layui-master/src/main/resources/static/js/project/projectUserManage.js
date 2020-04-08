@@ -43,7 +43,7 @@ $(function() {
                 //得到当前页码
                 console.log(curr);
                 //得到数据总量
-                //console.log(count);
+                console.log(count);
                 pageCurr=curr;
             }
         });

@@ -2,6 +2,7 @@ package com.project.manager.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.project.manager.common.utils.PageUtils;
 import com.project.manager.dao.BaseAdminPermissionMapper;
 import com.project.manager.pojo.BaseAdminRole;
 import com.project.manager.dao.BaseAdminRoleMapper;
@@ -64,12 +65,9 @@ public class AdminRoleServiceImpl implements AdminRoleService {
             roleList.add(roleDTO);
         }
 
-        PageHelper.startPage(pageNum, pageSize);
-
         if(roleList.size() != 0){
-            PageInfo<AdminRoleDTO> pageInfo = new PageInfo<>(roleList);
-            pageDataResult.setList(roleList);
-            pageDataResult.setTotals((int) pageInfo.getTotal());
+            pageDataResult.setList(PageUtils.getPageList(roles,pageNum,pageSize));
+            pageDataResult.setTotals(roles.size());
         }
         return pageDataResult;
     }

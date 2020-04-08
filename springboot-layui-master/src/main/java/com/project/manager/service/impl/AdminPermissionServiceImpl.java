@@ -3,6 +3,7 @@ package com.project.manager.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.project.manager.common.utils.DateUtils;
+import com.project.manager.common.utils.PageUtils;
 import com.project.manager.dao.BaseAdminPermissionMapper;
 import com.project.manager.dao.BaseAdminRoleMapper;
 import com.project.manager.dto.PermissionDTO;
@@ -95,9 +96,8 @@ public class AdminPermissionServiceImpl implements AdminPermissionService {
         PageHelper.startPage(pageNum, pageSize);
 
         if(permissions.size() != 0){
-            PageInfo<PermissionDTO> pageInfo = new PageInfo<>(permissions);
-            pageDataResult.setList(permissions);
-            pageDataResult.setTotals((int) pageInfo.getTotal());
+            pageDataResult.setList(PageUtils.getPageList(permissions,pageNum,pageSize));
+            pageDataResult.setTotals(permissions.size());
         }
         return pageDataResult;
     }

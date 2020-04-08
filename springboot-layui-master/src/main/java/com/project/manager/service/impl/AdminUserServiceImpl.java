@@ -3,6 +3,7 @@ package com.project.manager.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.project.manager.common.utils.DigestUtils;
+import com.project.manager.common.utils.PageUtils;
 import com.project.manager.dto.AdminUserDTO;
 import com.project.manager.pojo.BaseAdminUser;
 import com.project.manager.dao.BaseAdminUserMapper;
@@ -37,12 +38,9 @@ public class AdminUserServiceImpl implements AdminUserService{
         PageDataResult pageDataResult = new PageDataResult();
         List<AdminUserDTO> baseAdminUsers = baseAdminUserMapper.getUserList(userSearch);
 
-        PageHelper.startPage(pageNum, pageSize);
-
         if(baseAdminUsers.size() != 0){
-            PageInfo<AdminUserDTO> pageInfo = new PageInfo<>(baseAdminUsers);
-            pageDataResult.setList(baseAdminUsers);
-            pageDataResult.setTotals((int) pageInfo.getTotal());
+            pageDataResult.setList(PageUtils.getPageList(baseAdminUsers,pageNum,pageSize));
+            pageDataResult.setTotals(baseAdminUsers.size());
         }
 
         return pageDataResult;

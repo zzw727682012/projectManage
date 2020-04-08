@@ -4,6 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.project.manager.common.utils.DateRange;
 import com.project.manager.common.utils.DateUtils;
+import com.project.manager.common.utils.PageUtils;
 import com.project.manager.common.utils.StringUtils;
 import com.project.manager.dao.BaseProjectInfoMapper;
 import com.project.manager.dao.BaseProjectNodeMapper;
@@ -293,9 +294,8 @@ public class BaseProjectServiceImpl implements BaseProjectService {
         PageHelper.startPage(pageNum, pageSize);
 
         if(projectPlans.size() != 0){
-            PageInfo<BaseProjectNodeInfoDTO> pageInfo = new PageInfo<BaseProjectNodeInfoDTO>(projectPlans);
-            pageDataResult.setList(projectPlans);
-            pageDataResult.setTotals((int) pageInfo.getTotal());
+            pageDataResult.setList(PageUtils.getPageList(projectPlans,pageNum,pageSize));
+            pageDataResult.setTotals(projectPlans.size());
         }
 
         return pageDataResult;
@@ -324,12 +324,10 @@ public class BaseProjectServiceImpl implements BaseProjectService {
                 continue;
             }
         }
-        PageHelper.startPage(pageNum, pageSize);
 
         if(baseProjectInfoDTOList.size() != 0){
-            PageInfo<BaseProjectInfoDTO> pageInfo = new PageInfo<>(baseProjectInfoDTOList);
-            pageDataResult.setList(baseProjectInfoDTOList);
-            pageDataResult.setTotals((int) pageInfo.getTotal());
+            pageDataResult.setList(PageUtils.getPageList(baseProjectInfoDTOList,pageNum,pageSize));
+            pageDataResult.setTotals(baseProjectInfoDTOList.size());
         }
 
         return pageDataResult;
@@ -340,12 +338,10 @@ public class BaseProjectServiceImpl implements BaseProjectService {
         PageDataResult pageDataResult = new PageDataResult();
         List<BasePersonnelInfoDTO> basePersonnelInfoDTOS = baseProjectUserMapper.getPersonnelList(projectSearchDTO);
         logger.info(basePersonnelInfoDTOS.toString());
-        PageHelper.startPage(pageNum, pageSize);
 
         if(basePersonnelInfoDTOS.size() != 0){
-            PageInfo<BasePersonnelInfoDTO> pageInfo = new PageInfo<>(basePersonnelInfoDTOS);
-            pageDataResult.setList(basePersonnelInfoDTOS);
-            pageDataResult.setTotals((int) pageInfo.getTotal());
+            pageDataResult.setList(PageUtils.getPageList(basePersonnelInfoDTOS,pageNum,pageSize));
+            pageDataResult.setTotals(basePersonnelInfoDTOS.size());
         }
 
         return pageDataResult;
