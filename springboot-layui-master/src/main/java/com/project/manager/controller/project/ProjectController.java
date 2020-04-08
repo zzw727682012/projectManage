@@ -44,6 +44,9 @@ public class ProjectController {
     @Value("${nodeAttachmentPath}")
     private String nodeAttachmentPath;
 
+    @Value("${projectReportPath}")
+    private String projectReportPath;
+
     @Autowired
     private BaseProjectService baseProjectService;
 
@@ -194,8 +197,15 @@ public class ProjectController {
     @RequestMapping(value = "/delProject", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> delProject(@RequestParam("id") Integer id) {
-        logger.info("删除项目！id:" + id);
         Map<String, Object> data = new HashMap<>();
+        if (id == null) {
+            data.put("code",0);
+            data.put("msg","删除项目失败,项目id为空");
+            logger.error("删除项目失败");
+            return data;
+        }
+
+        logger.info("删除项目！id:" + id);
         data = baseProjectService.delProject(id);
         return data;
     }
@@ -203,8 +213,15 @@ public class ProjectController {
     @RequestMapping(value = "/delProjectUser", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> delProjectUser(@RequestParam("id") Integer id) {
-        logger.info("删除项目！id:" + id);
         Map<String, Object> data = new HashMap<>();
+        logger.info("删除项目！id:" + id);
+        if (id == null) {
+            data.put("code",0);
+            data.put("msg","删除人员失败,人员id为空");
+            logger.error("删除人员失败");
+            return data;
+        }
+
         data = baseProjectService.delProjectUser(id);
         return data;
     }
@@ -214,6 +231,13 @@ public class ProjectController {
     public Map<String, Object> delProjectNode(@RequestParam("id") Integer id) {
         logger.info("删除项目！id:" + id);
         Map<String, Object> data = new HashMap<>();
+        if (id == null) {
+            data.put("code",0);
+            data.put("msg","删除节点失败,节点id为空");
+            logger.error("删除节点失败");
+            return data;
+        }
+
         data = baseProjectService.delProjectNode(id);
         return data;
     }
@@ -232,6 +256,8 @@ public class ProjectController {
                 filePath = finalReportPath + name;
             } else if (type.equals("uploadNodeAttachment")) {
                 filePath = nodeAttachmentPath + name;
+            }  else if (type.equals("uploadProjectReport")) {
+                filePath = projectReportPath + name;
             } else {
                 result.setStatusMessage(IStatusMessage.SystemStatus.PARAM_ERROR);
             }
@@ -286,7 +312,11 @@ public class ProjectController {
                 BaseProjectInfo info = baseProjectService.getProjectByProjectId(Integer.valueOf(id));
                 fileName = info.getTechnicalReport();
                 path = technicalReportPath;
-            } else {
+            }  else if (type.equals("projectReport")) {
+                BaseProjectInfo info = baseProjectService.getProjectByProjectId(Integer.valueOf(id));
+                fileName = info.getTechnicalReport();
+                path = technicalReportPath;
+            }else {
                 logger.error("下载失败,下在类型不存在");
                 fileExist = false;
             }

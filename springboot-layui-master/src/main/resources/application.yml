@@ -39,7 +39,8 @@ finalReportPath: D:\springboot\finalReportPath\
 technicalReportPath: D:\springboot\technicalReportPath\
 #节点附件目录
 nodeAttachmentPath: D:\springboot\nodeAttachmentPath\
-
+#项目报告目录
+projectReportPath: D:\springboot\projectReportPath\
 
 logging:
   file: D:/springboot/logs/springboot.log

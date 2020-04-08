@@ -72,4 +72,8 @@
     <delete id="deleteProjectNode">
         delete from base_project_node WHERE id = #{id}
     </delete>
+
+    <delete id="deleteNodeByProjectId">
+        delete from base_project_node WHERE project_id = #{projectId}
+    </delete>
 </mapper>

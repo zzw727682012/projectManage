@@ -19,11 +19,13 @@
     <result column="expiration_time" jdbcType="VARCHAR" property="expirationTime" />
     <result column="start_time" jdbcType="VARCHAR" property="startTime" />
     <result column="if_finish" jdbcType="VARCHAR" property="finish" />
+    <result column="project_report" jdbcType="VARCHAR" property="projectReport" />
+
   </resultMap>
 
   <sql id="baseColumn">
     id,project_name,project_source,project_budget_amount,project_account_amount,project_manager_id,
-    technical_report,final_report,node_count,start_time,create_time,expiration_time,if_finish,project_researchers
+    technical_report,final_report,node_count,start_time,create_time,expiration_time,if_finish,project_researchers,project_report
   </sql>
 
 
@@ -64,7 +66,10 @@
         final_report = #{finalReport},
       </if>
       <if test="technicalReport != null">
-        technical_report = #{technicalReport}
+        technical_report = #{technicalReport},
+      </if>
+      <if test="projectReport != null">
+        project_report = #{projectReport}
       </if>
     </set>
     WHERE id = #{id}
@@ -85,6 +90,14 @@
     <if test="id != null">
       and id = #{id}
     </if>
+  </select>
+
+  <select id="getProjectByUserId" resultMap="BaseResultMap">
+    SELECT <include refid="baseColumn"/>
+    FROM base_project_info
+    WHERE project_manager_id = #{userId}
+      or project_researchers like CONCAT('%', #{userId}, '%')
+
   </select>
 
   <select id="getProjectList" resultType="com.project.manager.dto.BaseProjectInfoDTO">

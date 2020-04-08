@@ -22,4 +22,6 @@ public interface BaseProjectInfoMapper extends MyMapper<BaseProjectInfo> {
 
     int deleteProject(@Param("id") Integer id);
 
+    List<BaseProjectInfo> getProjectByUserId(@Param("userId") Integer userId);
+
 }

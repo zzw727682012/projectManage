@@ -116,6 +116,8 @@ function uploadFile(type) {
                     $("#technicalReport").val(res.obj);
                 } else if (type == "uploadFinalReport") {
                     $("#finalReport").val(res.obj);
+                } else if (type == "uploadProjectReport") {
+                    $("#projectReport").val(res.obj);
                 }
             } else {
                 layer.alert(res.message);
@@ -173,7 +175,7 @@ function openProject(data,title){
         $("#id").val("");
         $("#download1").attr("href","/project/downloadFile?id="+""+ "&type=" + "");
         $("#download2").attr("href","/project/downloadFile?id="+""+"&type=" + "");
-
+        $("#download3").attr("href","/project/downloadFile?id="+""+"&type=" + "");
     }else{
         console.log(data)
         $("#id").val(data.id);
@@ -190,6 +192,7 @@ function openProject(data,title){
         pid = data.projectResearchers;
         $("#download1").attr("href","/project/downloadFile?id="+data.id+"&type=" + "technicalReport");
         $("#download2").attr("href","/project/downloadFile?id="+data.id+"&type=" + "finalReport");
+        $("#download3").attr("href","/project/downloadFile?id="+data.id+"&type=" + "projectReport");
     }
     var pageNum = $(".layui-laypage-skip").find("input").val();
     $("#pageNum").val(pageNum);
