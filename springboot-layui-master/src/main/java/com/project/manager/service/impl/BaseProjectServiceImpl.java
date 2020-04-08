@@ -133,8 +133,14 @@ public class BaseProjectServiceImpl implements BaseProjectService {
     @Override
     public Map<String, Object> delProjectUser(Integer id) {
         Map<String,Object> data = new HashMap();
-
         try {
+            List<BaseProjectInfo> infos = baseProjectInfoMapper.getProjectByUserId(id);
+            if (infos != null && infos.size() > 0) {
+                data.put("code",0);
+                data.put("msg","删除失败,该人员是项目主导人或参研人！");
+                logger.error("删除人员失败");
+                return data;
+            }
             int result = baseProjectUserMapper.deleteProjectPersonnel(id);
             if(result == 0){
                 data.put("code",0);
@@ -350,7 +356,8 @@ public class BaseProjectServiceImpl implements BaseProjectService {
         Map<String, Object> data = new HashMap<>();
         try {
             int result = baseProjectInfoMapper.deleteProject(id);
-            if(result == 0){
+            int re = baseProjectNodeMapper.deleteNodeByProjectId(id);
+            if(result == 0 || re == 0){
                 data.put("code",0);
                 data.put("msg","删除项目失败");
                 logger.error("删除项目失败");
