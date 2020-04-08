@@ -2,9 +2,7 @@ package com.project.manager.pojo;
 
 
 import javax.persistence.*;
-/**
- * 项目和人员关联表
- */
+
 @Table(name = "base_project_user")
 public class BaseProjectUser {
 

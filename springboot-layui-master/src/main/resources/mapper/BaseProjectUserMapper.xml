@@ -81,6 +81,16 @@
     </delete>
 
     <select id="getProjectUsers" resultMap="BaseResultMap">
-           SELECT id,user_name FROM base_project_user
+        SELECT id,user_name FROM base_project_user
     </select>
+
+    <insert id="insertUser" parameterType="com.project.manager.pojo.BaseProjectUser">
+       INSERT INTO base_project_user ( id,user_name,user_sex,user_birthday,user_politics_status,
+       user_join_time,user_graduate_institutions,user_organization,user_teaching_office,user_home_address,create_time )
+       VALUES( #{id},#{userName},#{userSex},#{userBirthday},#{userPoliticsStatus},
+       #{userJoinTime},#{userGraduateInstitutions},#{userOrganization},#{userTeachingOffice},#{userHomeAddress},#{createTime})
+        <selectKey keyColumn="id" resultType="INTEGER" keyProperty="id" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+    </insert>
 </mapper>

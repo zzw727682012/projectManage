@@ -16,6 +16,7 @@ CREATE TABLE `base_project_info` (
 	`project_researchers` VARCHAR(200) NULL DEFAULT NULL COMMENT '项目参研人员' COLLATE 'utf8_general_ci',
 	`technical_report` VARCHAR(200) NULL DEFAULT NULL COMMENT '技术报告' COLLATE 'utf8_general_ci',
 	`final_report` VARCHAR(200) NULL DEFAULT NULL COMMENT '总结报告' COLLATE 'utf8_general_ci',
+	`project_report` VARCHAR(200) NULL DEFAULT NULL COMMENT '项目报告' COLLATE 'utf8_general_ci',
 	`node_count` INT(10) UNSIGNED ZEROFILL NULL DEFAULT NULL COMMENT '节点数量',
 	`create_time` VARCHAR(64) NULL DEFAULT NULL COMMENT '添加时间' COLLATE 'utf8_general_ci',
 	`expiration_time` VARCHAR(64) NULL DEFAULT NULL COMMENT '到期时间' COLLATE 'utf8_general_ci',

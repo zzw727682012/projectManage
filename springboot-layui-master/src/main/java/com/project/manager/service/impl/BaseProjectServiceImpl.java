@@ -81,7 +81,7 @@ public class BaseProjectServiceImpl implements BaseProjectService {
         Map<String,Object> data = new HashMap();
         try {
             baseProjectUser.setCreateTime(DateUtils.getCurrentDate());
-            int result = baseProjectUserMapper.insert(baseProjectUser);
+            int result = baseProjectUserMapper.insertUser(baseProjectUser);
             if(result == 0){
                 data.put("code",0);
                 data.put("msg","新增人员失败！");

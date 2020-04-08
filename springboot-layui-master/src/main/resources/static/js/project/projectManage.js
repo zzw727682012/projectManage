@@ -284,12 +284,16 @@ function load(obj){
 
 function cleanProject(){
     $("#projectName").val("");
-    $("#projectCode").val("");
+    $("#projectSource").val("");
     $('#projectBudgetAmount').val("");
     $("#projectAccountAmount").val("");
-    $("#projectAccessory").val("");
+    $("#finalReport").val("");
+    $("#technicalReport").val("");
+    $("#projectReport").val("");
     $("#projectManagerName").html("");
     $("#projectResearchers").val("");
+    $("#startTime").val("");
+    $("#expirationTime").val("");
     $("#finish").val("");
 }
 

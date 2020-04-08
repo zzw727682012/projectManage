@@ -22,4 +22,5 @@ public interface BaseProjectUserMapper extends MyMapper<BaseProjectUser> {
 
     List<BaseProjectUser> getProjectUsers();
 
+    int insertUser(BaseProjectUser baseProjectUser);
 }
