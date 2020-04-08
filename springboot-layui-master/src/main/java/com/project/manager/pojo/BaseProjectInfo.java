@@ -62,6 +62,13 @@ public class BaseProjectInfo {
     @Column(name = "final_report")
     private String finalReport;
 
+
+    /**
+     * 总结报告
+     */
+    @Column(name = "project_report")
+    private String projectReport;
+
     /**
      * 节点数量
      */
@@ -131,6 +138,14 @@ public class BaseProjectInfo {
 
     public void setProjectAccountAmount(Double projectAccountAmount) {
         this.projectAccountAmount = projectAccountAmount;
+    }
+
+    public String getProjectReport() {
+        return projectReport;
+    }
+
+    public void setProjectReport(String projectReport) {
+        this.projectReport = projectReport;
     }
 
     public Integer getProjectManagerId() {
