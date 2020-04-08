@@ -309,7 +309,8 @@ public class BaseProjectServiceImpl implements BaseProjectService {
                 List<String> nameList = new ArrayList<>();
                 for (String id: ids) {
                     if (StringUtils.isNotNull(id)) {
-                        nameList.add(baseProjectUserMapper.getProjectUserById(Integer.valueOf(id)).getUserName());
+                        BaseProjectUser user = baseProjectUserMapper.getProjectUserById(Integer.valueOf(id));
+                        nameList.add(user.getUserName());
                     }
                 }
                 dto.setProjectResearchersName(nameList.toString());

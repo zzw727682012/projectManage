@@ -14,8 +14,9 @@ public class CurrentTest {
         String orderNo=null;
         ReceiveLabellingValueDTO r = JSONObject.parseObject(replaceStr,ReceiveLabellingValueDTO.class);
             orderNo = "_" + r.getContent().get(0).getReleaseId();
-        String fileName = r.getBrandCode() + orderNo + "_" + System.currentTimeMillis()+ "_LAB.txt";
+        String fileName = "2020-04-07T12:47:37Z";
 
+        System.out.println();
     }
 
 }
