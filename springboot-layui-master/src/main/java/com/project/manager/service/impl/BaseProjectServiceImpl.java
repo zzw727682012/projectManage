@@ -22,6 +22,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -43,61 +44,51 @@ public class BaseProjectServiceImpl implements BaseProjectService {
 
     @Override
     public Map<String, Object> addProject(BaseProjectInfo projectInfo) {
-        Map<String,Object> data = new HashMap();
-        try {
-            BaseProjectInfo old = baseProjectInfoMapper.getProjectByProjectName(projectInfo.getProjectName(),null);
+        Map<String, Object> data = new HashMap();
 
-            if (old != null) {
-                data.put("code",0);
-                data.put("msg","项目已存在！");
-                logger.error("项目[新增]，结果=项目已存在！");
-                return data;
-            }
+        BaseProjectInfo old = baseProjectInfoMapper.getProjectByProjectName(projectInfo.getProjectName(), null);
 
-            projectInfo.setCreateTime(DateUtils.getCurrentDate());
-            int result = baseProjectInfoMapper.insert(projectInfo);
-
-            if (result == 0) {
-                data.put("code",0);
-                data.put("msg","新增项目失败！");
-                logger.error("项目[新增]，结果=新增失败！");
-                return data;
-            }
-
-            data.put("code",1);
-            data.put("msg","新增成功！");
-            logger.info("项目[新增]，结果=新增成功！");
-        } catch (Exception e) {
-            e.printStackTrace();
-            logger.error("项目[新增]异常！", e);
-            data.put("code",1);
-            data.put("msg","项目新增异常" + e.getMessage());
+        if (old != null) {
+            data.put("code", 0);
+            data.put("msg", "项目已存在！");
+            logger.error("项目[新增]，结果=项目已存在！");
             return data;
         }
+
+        projectInfo.setCreateTime(DateUtils.getCurrentDate());
+        int result = baseProjectInfoMapper.insert(projectInfo);
+
+        if (result == 0) {
+            data.put("code", 0);
+            data.put("msg", "新增项目失败！");
+            logger.error("项目[新增]，结果=新增失败！");
+            return data;
+        }
+
+        data.put("code", 1);
+        data.put("msg", "新增成功！");
+        logger.info("项目[新增]，结果=新增成功！");
+
         return data;
     }
 
     @Override
     public Map<String, Object> addProjectUser(BaseProjectUser baseProjectUser) {
-        Map<String,Object> data = new HashMap();
-        try {
-            baseProjectUser.setCreateTime(DateUtils.getCurrentDate());
-            int result = baseProjectUserMapper.insertUser(baseProjectUser);
-            if(result == 0){
-                data.put("code",0);
-                data.put("msg","新增人员失败！");
-                logger.error("人员[新增]，结果=新增失败！");
-                return data;
-            }
+        Map<String, Object> data = new HashMap();
 
-            data.put("code",1);
-            data.put("msg","新增成功！");
-            logger.info("人员[新增]，结果=新增成功！");
-        } catch (Exception e) {
-            e.printStackTrace();
-            logger.error("人员[新增]异常！", e);
+        baseProjectUser.setCreateTime(DateUtils.getCurrentDate());
+        int result = baseProjectUserMapper.insertUser(baseProjectUser);
+        if (result == 0) {
+            data.put("code", 0);
+            data.put("msg", "新增人员失败！");
+            logger.error("人员[新增]，结果=新增失败！");
             return data;
         }
+
+        data.put("code", 1);
+        data.put("msg", "新增成功！");
+        logger.info("人员[新增]，结果=新增成功！");
+
         return data;
     }
 
@@ -109,85 +100,66 @@ public class BaseProjectServiceImpl implements BaseProjectService {
 
     @Override
     public Map<String, Object> updateProjectUser(BaseProjectUser baseProjectUser) {
-        Map<String,Object> data = new HashMap();
+        Map<String, Object> data = new HashMap();
 
-        try {
-            int result = baseProjectUserMapper.updateProject(baseProjectUser);
-            if(result == 0){
-                data.put("code",0);
-                data.put("msg","编辑人员信息失败");
-                logger.error("编辑人员信息失败");
-                return data;
-            }
-            data.put("code",1);
-            data.put("msg","编辑人员信息成功");
-            logger.info("编辑人员信息成功");
-        } catch (Exception e) {
-            data.put("code",0);
-            data.put("msg","编辑人员信息失败");
-            logger.error("编辑人员信息失败" + e.getMessage());
-            e.printStackTrace();
+        int result = baseProjectUserMapper.updateProject(baseProjectUser);
+        if (result == 0) {
+            data.put("code", 0);
+            data.put("msg", "编辑人员信息失败");
+            logger.error("编辑人员信息失败");
+            return data;
         }
+        data.put("code", 1);
+        data.put("msg", "编辑人员信息成功");
+        logger.info("编辑人员信息成功");
+
         return data;
     }
 
     @Override
     public Map<String, Object> delProjectUser(Integer id) {
-        Map<String,Object> data = new HashMap();
-        try {
-            List<BaseProjectInfo> infos = baseProjectInfoMapper.getProjectByUserId(id);
-            if (infos != null && infos.size() > 0) {
-                data.put("code",0);
-                data.put("msg","删除失败,该人员是项目主导人或参研人！");
-                logger.error("删除人员失败");
-                return data;
-            }
-            int result = baseProjectUserMapper.deleteProjectPersonnel(id);
-            if(result == 0){
-                data.put("code",0);
-                data.put("msg","删除人员失败");
-                logger.error("删除人员失败");
-                return data;
-            }
-            data.put("code",1);
-            data.put("msg","删除人员成功");
-            logger.info("删除人员成功");
-        } catch (Exception e) {
-            data.put("code",0);
-            data.put("msg","删除人员失败");
-            logger.error("删除人员失败" + e.getMessage());
-            e.printStackTrace();
+        Map<String, Object> data = new HashMap();
+
+        List<BaseProjectInfo> infos = baseProjectInfoMapper.getProjectByUserId(id);
+        if (infos != null && infos.size() > 0) {
+            data.put("code", 0);
+            data.put("msg", "删除失败,该人员是项目主导人或参研人！");
+            logger.error("删除人员失败");
+            return data;
         }
+        int result = baseProjectUserMapper.deleteProjectPersonnel(id);
+        if (result == 0) {
+            throw new RuntimeException("删除人员失败");
+        }
+        data.put("code", 1);
+        data.put("msg", "删除人员成功");
+        logger.info("删除人员成功");
+
         return data;
     }
 
+    @Transactional
     @Override
     public Map<String, Object> addProjectNode(BaseProjectNode projectPlan) {
-        Map<String,Object> data = new HashMap();
-        try {
-            BaseProjectInfo info = baseProjectInfoMapper.getProjectByProjectName(projectPlan.getProjectName(), null);
-            info.setNodeCount(info.getNodeCount() == null ? 1 : info.getNodeCount() + 1);
-            projectPlan.setProjectManagerId(info.getProjectManagerId());
-            projectPlan.setProjectId(info.getId());
-            projectPlan.setCreateTime(DateUtils.getNowDateString());
-            int result = baseProjectNodeMapper.insert(projectPlan);
-            if(result == 0){
-                data.put("code",0);
-                data.put("msg","新增项目结点失败！");
-                logger.error("新增项目结点[新增]，结果=新增失败！");
-                return data;
-            }
-            updateProject(info);
-            data.put("code",1);
-            data.put("msg","新增成功！");
-            logger.info("新增项目结点[新增]，结果=新增成功！");
-        } catch (Exception e) {
-            e.printStackTrace();
-            data.put("code",0);
-            data.put("msg","新增项目结点失败！" + e);
-            logger.error("新增项目结点 [新增]异常！", e.getMessage());
+        Map<String, Object> data = new HashMap();
+
+        BaseProjectInfo info = baseProjectInfoMapper.getProjectByProjectName(projectPlan.getProjectName(), null);
+        info.setNodeCount(info.getNodeCount() == null ? 1 : info.getNodeCount() + 1);
+        projectPlan.setProjectManagerId(info.getProjectManagerId());
+        projectPlan.setProjectId(info.getId());
+        projectPlan.setCreateTime(DateUtils.getNowDateString());
+        int result = baseProjectNodeMapper.insert(projectPlan);
+        if (result == 0) {
+            data.put("code", 0);
+            data.put("msg", "新增项目结点失败！");
+            logger.error("新增项目结点[新增]，结果=新增失败！");
             return data;
         }
+        updateProject(info);
+        data.put("code", 1);
+        data.put("msg", "新增成功！");
+        logger.info("新增项目结点[新增]，结果=新增成功！");
+
         return data;
     }
 
@@ -196,55 +168,44 @@ public class BaseProjectServiceImpl implements BaseProjectService {
         return baseProjectNodeMapper.getProjectNodeById(id);
     }
 
+    @Transactional
     @Override
     public Map<String, Object> delProjectNode(Integer id) {
         Map<String,Object> data = new HashMap();
 
-        try {
-            BaseProjectNode projectNode = getProjectNode(id);
-            BaseProjectInfo info = baseProjectInfoMapper.getProjectByProjectName(projectNode.getProjectName(), projectNode.getId());
-            int result = baseProjectNodeMapper.deleteProjectNode(id);
-            if(result == 0){
-                data.put("code",0);
-                data.put("msg","删除节点失败");
-                logger.error("删除节点失败");
-                return data;
-            }
-            info.setNodeCount(info.getNodeCount() == null ? 0 : info.getNodeCount() - 1);
-            updateProject(info);
-            data.put("code",1);
-            data.put("msg","删除节点成功");
-            logger.info("删除节点成功");
-        } catch (Exception e) {
+        BaseProjectNode projectNode = getProjectNode(id);
+        BaseProjectInfo info = baseProjectInfoMapper.getProjectByProjectName(projectNode.getProjectName(), projectNode.getProjectId());
+        int result = baseProjectNodeMapper.deleteProjectNode(id);
+        if(result == 0){
             data.put("code",0);
             data.put("msg","删除节点失败");
-            logger.error("删除节点失败" + e.getMessage());
-            e.printStackTrace();
+            logger.error("删除节点失败");
+            return data;
         }
+        info.setNodeCount(info.getNodeCount() == null ? 0 : info.getNodeCount() - 1);
+        updateProject(info);
+        data.put("code",1);
+        data.put("msg","删除节点成功");
+        logger.info("删除节点成功");
+
         return data;
     }
 
     @Override
     public Map<String, Object> updateProjectNode(BaseProjectNode projectNode) {
         Map<String,Object> data = new HashMap();
-        try {
-            int result = baseProjectNodeMapper.updateProjectNode(projectNode);
-            if(result == 0){
-                data.put("code",0);
-                data.put("msg","更新项目结点失败！");
-                logger.error("更新项目结点[更新]，结果=新增失败！");
-                return data;
-            }
-            data.put("code",1);
-            data.put("msg","更新成功！");
-            logger.info("更新项目结点[更新]，结果=新增成功！");
-        } catch (Exception e) {
-            e.printStackTrace();
-            logger.error("更新项目结点 [更新]异常！", e.getMessage());
-            data.put("code",0);
-            data.put("msg","更新项目结点失败！" + e.getMessage());
+
+        int result = baseProjectNodeMapper.updateProjectNode(projectNode);
+        if (result == 0) {
+            data.put("code", 0);
+            data.put("msg", "更新项目结点失败！");
+            logger.error("更新项目结点[更新]，结果=新增失败！");
             return data;
         }
+        data.put("code", 1);
+        data.put("msg", "更新成功！");
+        logger.info("更新项目结点[更新]，结果=新增成功！");
+
         return data;
     }
 
@@ -347,25 +308,25 @@ public class BaseProjectServiceImpl implements BaseProjectService {
         return pageDataResult;
     }
 
+    @Transactional
     @Override
     public Map<String, Object> delProject(Integer id) {
         Map<String, Object> data = new HashMap<>();
-        try {
-            int result = baseProjectInfoMapper.deleteProject(id);
-            int re = baseProjectNodeMapper.deleteNodeByProjectId(id);
-            if(result == 0 || re == 0){
-                data.put("code",0);
-                data.put("msg","删除项目失败");
-                logger.error("删除项目失败");
-                return data;
-            }
-            data.put("code",1);
-            data.put("msg","删除项目成功");
-            logger.info("删除项目成功");
-        } catch (Exception e) {
-            e.printStackTrace();
-            logger.error("删除项目异常！", e);
+
+        int result = baseProjectInfoMapper.deleteProject(id);
+        int re = -1;
+        List<BaseProjectNode> nodes = baseProjectNodeMapper.getProjectNodeByProjectId(id);
+        if (nodes != null && nodes.size() > 0) {
+            re = baseProjectNodeMapper.deleteNodeByProjectId(id);
         }
+
+        if (result == 0 || re == 0) {
+            throw new RuntimeException("删除项目失败");
+        }
+        data.put("code", 1);
+        data.put("msg", "删除项目成功");
+        logger.info("删除项目成功");
+
         return data;
     }
 }

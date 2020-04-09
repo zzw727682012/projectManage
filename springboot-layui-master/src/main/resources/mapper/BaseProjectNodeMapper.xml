@@ -26,6 +26,12 @@
         FROM base_project_node
         WHERE id = #{id}
     </select>
+    <select id="getProjectNodeByProjectId" resultMap="BaseResultMap">
+        SELECT <include refid="baseColumn"/>
+        FROM base_project_node
+        WHERE project_id = #{id}
+    </select>
+
     <update id="updateProjectNode">
         UPDATE base_project_node
         <set>

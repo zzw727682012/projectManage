@@ -21,6 +21,8 @@ public interface BaseProjectNodeMapper extends MyMapper<BaseProjectNode> {
 
     BaseProjectNode getProjectNodeById(@Param("id")Integer id);
 
+    List<BaseProjectNode> getProjectNodeByProjectId(@Param("id")Integer id);
+
     int deleteNodeByProjectId(@Param("projectId") Integer projectId);
 
 }

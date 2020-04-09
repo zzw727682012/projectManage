@@ -72,7 +72,12 @@ $(function() {
             //监听搜索框
             form.on('submit(searchSubmit)', function(data){
                 //重新加载table
-                load(data);
+                tableIns.reload({
+                    where: data.field
+                    , page: {
+                        curr: 1 //从当前页码开始
+                    }
+                })
                 return false;
             });
         });
@@ -239,12 +244,7 @@ function delProjectNode(obj, id, name) {
 
 function load(obj){
     //重新加载table
-    tableIns.reload({
-        where: obj.field
-        , page: {
-            curr: pageCurr //从当前页码开始
-        }
-    });
+    $(".layui-laypage-btn")[0].click();
 }
 
 function cleanProject(){

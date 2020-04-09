@@ -11,6 +11,7 @@ public interface IStatusMessage {
 
         SUCCESS("200","SUCCESS"), //请求成功
         ERROR("404","ERROR"),	   //请求失败
+        EXCEPTION("400","EXCEPTION"), //请求参数有误
         PARAM_ERROR("1002","PARAM_ERROR"), //请求参数有误
         SUCCESS_MATCH("1003","SUCCESS_MATCH"), //表示成功匹配
         NO_LOGIN("1100","NO_LOGIN"), //未登录

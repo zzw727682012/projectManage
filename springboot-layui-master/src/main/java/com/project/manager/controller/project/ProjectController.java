@@ -126,21 +126,18 @@ public class ProjectController {
         logger.info("分页查询项目列表！搜索条件: project search：" + projectSearchDTO + ",pageNum:" + pageNum
                 + ",每页记录数量pageSize:" + pageSize);
         PageDataResult pdr = new PageDataResult();
-        try {
-            if(null == pageNum) {
-                pageNum = 1;
-            }
-            if(null == pageSize) {
-                pageSize = 10;
-            }
-            // 获取用户列表
-            pdr = baseProjectService.getProjectList(projectSearchDTO, pageNum ,pageSize);
-            logger.info("项目列表查询=pdr:" + pdr);
 
-        } catch (Exception e) {
-            e.printStackTrace();
-            logger.error("项目列表查询异常！", e);
+        if (null == pageNum) {
+            pageNum = 1;
         }
+        if (null == pageSize) {
+            pageSize = 10;
+        }
+        // 获取用户列表
+        pdr = baseProjectService.getProjectList(projectSearchDTO, pageNum, pageSize);
+        logger.info("项目列表查询=pdr:" + pdr);
+
+
         return pdr;
     }
 
@@ -151,21 +148,18 @@ public class ProjectController {
         logger.info("分页查询人员信息列表！搜索条件：project search：" + projectSearchDTO + ",pageNum:" + pageNum
                 + ",每页记录数量pageSize:" + pageSize);
         PageDataResult pdr = new PageDataResult();
-        try {
-            if(null == pageNum) {
-                pageNum = 1;
-            }
-            if(null == pageSize) {
-                pageSize = 10;
-            }
-            // 获取用户列表
-            pdr = baseProjectService.getProjectUserList(projectSearchDTO, pageNum ,pageSize);
-            logger.info("项目列表查询=pdr:" + pdr);
 
-        } catch (Exception e) {
-            e.printStackTrace();
-            logger.error("项目列表查询异常！", e);
+        if (null == pageNum) {
+            pageNum = 1;
         }
+        if (null == pageSize) {
+            pageSize = 10;
+        }
+        // 获取用户列表
+        pdr = baseProjectService.getProjectUserList(projectSearchDTO, pageNum, pageSize);
+        logger.info("项目列表查询=pdr:" + pdr);
+
+
         return pdr;
     }
 
@@ -176,21 +170,18 @@ public class ProjectController {
         logger.info("分页查询项目结点！搜索条件：project search：" + projectSearchDTO + ",pageNum:" + pageNum
                 + ",每页记录数量pageSize:" + pageSize);
         PageDataResult pdr = new PageDataResult();
-        try {
-            if(null == pageNum) {
-                pageNum = 1;
-            }
-            if(null == pageSize) {
-                pageSize = 10;
-            }
-            // 获取用户列表
-            pdr = baseProjectService.getProjectNodeList(projectSearchDTO, pageNum ,pageSize);
-            logger.info("项目结点查询=pdr:" + pdr);
 
-        } catch (Exception e) {
-            e.printStackTrace();
-            logger.error("项目结点查询查询异常！", e);
+        if (null == pageNum) {
+            pageNum = 1;
         }
+        if (null == pageSize) {
+            pageSize = 10;
+        }
+        // 获取用户列表
+        pdr = baseProjectService.getProjectNodeList(projectSearchDTO, pageNum, pageSize);
+        logger.info("项目结点查询=pdr:" + pdr);
+
+
         return pdr;
     }
 
@@ -204,9 +195,8 @@ public class ProjectController {
             logger.error("删除项目失败");
             return data;
         }
-
-        logger.info("删除项目！id:" + id);
         data = baseProjectService.delProject(id);
+        logger.info("删除项目！id:" + id);
         return data;
     }
 
@@ -221,8 +211,8 @@ public class ProjectController {
             logger.error("删除人员失败");
             return data;
         }
-
         data = baseProjectService.delProjectUser(id);
+
         return data;
     }
 
