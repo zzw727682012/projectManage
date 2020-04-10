@@ -223,7 +223,16 @@ function delProjectUser(obj, id, name) {
 
 function load(obj){
     //重新加载table
-    $(".layui-laypage-btn")[0].click();
+    if ($(".layui-laypage-btn")[0] == null) {
+        tableIns.reload({
+            where: obj.field
+            , page: {
+                curr: 1 //从当前页码开始
+            }
+        })
+    } else {
+        $(".layui-laypage-btn")[0].click();
+    }
 }
 
 function cleanProject(){

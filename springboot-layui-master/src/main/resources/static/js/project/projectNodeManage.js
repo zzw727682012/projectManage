@@ -27,7 +27,6 @@ $(function() {
                 {type:'numbers'}
                 ,{field:'projectName', title:'项目名称',align:'center'}
                 ,{field:'projectNodeName', title: '项目结点名称',align:'center'}
-                ,{field:'projectManagerName', title: '项目主导人',align:'center'}
                 ,{field:'createTime', title:'创建时间',align:'center'}
                 ,{field:'expirationTime', title: '截止日期',align:'center'}
                 ,{field:'projectNodeFinish', title: '节点是否完成',align:'center'}
@@ -244,7 +243,16 @@ function delProjectNode(obj, id, name) {
 
 function load(obj){
     //重新加载table
-    $(".layui-laypage-btn")[0].click();
+    if ($(".layui-laypage-btn")[0] == null) {
+        tableIns.reload({
+            where: obj.field
+            , page: {
+                curr: 1 //从当前页码开始
+            }
+        })
+    } else {
+        $(".layui-laypage-btn")[0].click();
+    }
 }
 
 function cleanProject(){
