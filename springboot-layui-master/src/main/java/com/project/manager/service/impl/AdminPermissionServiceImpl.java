@@ -17,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.support.TransactionCallback;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,7 +30,7 @@ import java.util.Map;
  * @version: 1.0
  */
 @Service
-public class AdminPermissionServiceImpl implements AdminPermissionService {
+public class AdminPermissionServiceImpl implements AdminPermissionService, TransactionCallback {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
