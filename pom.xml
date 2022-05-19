@@ -14,10 +14,5 @@
         <version>2.1.3.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <modules>
-        <module>Colin</module>
-        <module>Zzw</module>
-        <module>KafkaDemo</module>
-    </modules>
 
 </project>
